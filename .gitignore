@@ -1,0 +1,8 @@
+# dev-only dependency, used by the tools/ scripts and never by the server
+node_modules/
+
+# OS / editor noise
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp

@@ -1,0 +1,15 @@
+{
+  "name": "gata-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GATA HUB single-page landing site",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "images": "node tools/optimize-images.js assets/nft",
+    "fonts": "node tools/fetch-fonts.js"
+  },
+  "dependencies": {
+    "sharp": "^0.35.3"
+  }
+}

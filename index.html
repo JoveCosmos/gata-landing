@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GATA HUB — Catnip for the decentralized world of tomorrow</title>
+<meta name="description" content="GATA HUB — NFT collections, validators, public RPC endpoints and a block explorer for the interchain." />
+<link rel="icon" href="assets/gata-logo.jpg" />
+<!-- Fonts are self-hosted: no third-party request, no CSP exception,
+     nothing leaves the visitor's browser for a font. The latin-ext faces
+     only download if such a character is actually rendered. -->
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url(assets/fonts/instrument-serif-italic-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url(assets/fonts/instrument-serif-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/instrument-serif-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/instrument-serif-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-style:normal;font-weight:300 600;font-display:swap;src:url(assets/fonts/inter-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Inter';font-style:normal;font-weight:300 600;font-display:swap;src:url(assets/fonts/inter-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 500;font-display:swap;src:url(assets/fonts/jetbrains-mono-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 500;font-display:swap;src:url(assets/fonts/jetbrains-mono-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+
+
+:root{
+  --ink:#05040a;
+  --panel:rgba(255,255,255,.026);
+  --line:rgba(255,255,255,.085);
+  --line-strong:rgba(255,255,255,.16);
+  --txt:#efeaf6;
+  --muted:#9a93ac;
+  --faint:#6d6680;
+  --pink:#ff2e7e;
+  --violet:#7a5cff;
+  --up:#3ddc97;
+  --down:#ff4d5e;
+  --warn:#ffc24b;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --serif:'Instrument Serif','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --pad:clamp(20px,5vw,64px);
+  --maxw:1180px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--ink); color:var(--txt);
+  font-family:var(--sans); font-weight:300; font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ── ambient field ─────────────────────────────── */
+.field{position:fixed;inset:0;pointer-events:none;z-index:0}
+.field::before,.field::after{content:'';position:absolute;border-radius:50%;filter:blur(120px);opacity:.5}
+.field::before{width:60vw;height:60vw;left:-18vw;top:-22vw;background:radial-gradient(circle,rgba(255,46,126,.32),transparent 68%)}
+.field::after{width:62vw;height:62vw;right:-20vw;top:6vw;background:radial-gradient(circle,rgba(122,92,255,.30),transparent 68%)}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+.grid-lines{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:88px 88px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 10%,transparent 78%);
+  mask-image:radial-gradient(ellipse at 50% 0%,#000 10%,transparent 78%)}
+
+.wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+
+/* ── nav ───────────────────────────────────────── */
+header{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .4s,border-color .4s,backdrop-filter .4s;border-bottom:1px solid transparent}
+header.stuck{background:rgba(5,4,10,.72);backdrop-filter:blur(18px) saturate(150%);border-bottom-color:var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;height:76px}
+.brand{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:500;letter-spacing:.2em;text-transform:uppercase}
+.brand .mark{width:34px;height:34px;border-radius:10px;object-fit:cover;border:1px solid var(--line-strong);
+  box-shadow:0 0 22px -6px rgba(255,46,126,.55);transition:box-shadow .35s,border-color .35s}
+.brand:hover .mark{box-shadow:0 0 28px -4px rgba(255,46,126,.85);border-color:rgba(255,46,126,.5)}
+.nav-links{display:flex;align-items:center;gap:34px}
+.nav-links a{font-size:12.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);transition:color .25s;position:relative}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-6px;height:1px;width:0;background:linear-gradient(90deg,var(--pink),var(--violet));transition:width .3s}
+.nav-links a:hover{color:var(--txt)}
+.nav-links a:hover::after{width:100%}
+
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:11px;
+  padding:13px 26px;border-radius:999px;font-size:12.5px;letter-spacing:.17em;text-transform:uppercase;
+  font-weight:500;color:#fff;isolation:isolate;overflow:hidden;white-space:nowrap;
+  background:linear-gradient(100deg,var(--pink),var(--violet));
+  box-shadow:0 6px 30px -8px rgba(255,46,126,.6),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;
+}
+.btn::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,var(--violet),var(--pink));opacity:0;transition:opacity .4s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 44px -10px rgba(122,92,255,.75),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn:hover::before{opacity:1}
+.btn .arw{transition:transform .3s}
+.btn:hover .arw{transform:translateX(4px)}
+.btn.sm{padding:10px 20px;font-size:11px}
+.btn.ghost{background:transparent;border:1px solid var(--line-strong);box-shadow:none;color:var(--muted)}
+.btn.ghost::before{display:none}
+.btn.ghost:hover{border-color:rgba(255,46,126,.55);color:#fff;background:rgba(255,46,126,.07);box-shadow:none;transform:translateY(-1px)}
+
+/* ── hero ──────────────────────────────────────── */
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:120px 0 80px;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,70px);align-items:center;width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:7px 16px;background:var(--panel);backdrop-filter:blur(8px);margin-bottom:28px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--up);box-shadow:0 0 0 0 rgba(61,220,151,.6);animation:pulse 2.4s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(61,220,151,0)}100%{box-shadow:0 0 0 0 rgba(61,220,151,0)}}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(48px,7.6vw,92px);line-height:.98;letter-spacing:-.015em;margin:0 0 36px}
+h1 .grad{background:linear-gradient(100deg,var(--pink) 5%,var(--violet) 95%);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+
+.cat-stage{position:relative;display:flex;justify-content:center;align-items:center}
+.cat-stage::before{content:'';position:absolute;width:88%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(122,92,255,.32),rgba(255,46,126,.16) 45%,transparent 70%);filter:blur(46px)}
+.halo{position:absolute;width:min(92%,470px);aspect-ratio:1;border:1px solid var(--line);border-radius:50%;animation:spin 34s linear infinite}
+.halo.two{width:min(112%,560px);border-color:rgba(255,255,255,.05);animation:spin 52s linear infinite reverse}
+.halo .spark{position:absolute;top:-3px;left:50%;width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 14px 3px rgba(255,46,126,.85)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cat{position:relative;width:min(100%,430px);filter:drop-shadow(0 34px 60px rgba(0,0,0,.7)) drop-shadow(0 0 34px rgba(255,46,126,.22));animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+
+/* ── section furniture ─────────────────────────── */
+section{padding:clamp(72px,10vw,132px) 0;position:relative}
+.sec-head{margin-bottom:46px;max-width:60ch}
+.kicker{display:flex;align-items:center;gap:14px;font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--pink);margin-bottom:16px}
+.kicker::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,46,126,.5),transparent)}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);line-height:1.08;letter-spacing:-.01em;margin:0 0 14px}
+.sec-head p{color:var(--muted);margin:0;font-size:15.5px;max-width:56ch}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent)}
+
+/* group label used by nfts */
+.grp{display:flex;align-items:center;gap:13px;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--faint);margin:0 0 16px}
+.grp::after{content:'';flex:1;height:1px;background:var(--line)}
+.grp.next{margin-top:38px}
+.grp b{font-weight:400;color:var(--muted)}
+
+/* ── zones: how mainnet / testnet / services are separated ──────────
+   Each zone is its own framed field with a coloured spine and a
+   corner plate, so the two networks read as different places rather
+   than as two lists under two headings. */
+/* Each accent is spelled out as three explicit values — solid, border
+   tint, fill tint — rather than derived with color-mix(), which Safari
+   below 16.2 drops whole, leaving the plates with no border at all. */
+.zone{--zc:var(--pink);--zc-line:rgba(255,46,126,.38);--zc-fill:rgba(255,46,126,.1);--zc-glow:rgba(255,46,126,.12);
+  position:relative;border:1px solid var(--line);border-radius:20px;padding:26px 24px 24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.022),transparent 42%);overflow:hidden}
+.zone + .zone{margin-top:22px}
+.zone::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--zc),transparent 78%)}
+.zone::after{content:'';position:absolute;left:0;right:0;top:0;height:120px;pointer-events:none;
+  background:radial-gradient(120% 100% at 0% 0%,var(--zc-glow),transparent 60%)}
+.zone > *{position:relative}
+.zone-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.zone-plate{display:inline-flex;align-items:center;gap:9px;padding:7px 15px;border-radius:999px;
+  border:1px solid var(--zc-line);background:var(--zc-fill);
+  color:var(--zc);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;font-weight:500}
+.zone-plate .sq{width:5px;height:5px;border-radius:1px;background:currentColor;transform:rotate(45deg)}
+.zone-count{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.08em}
+.zone-note{margin-left:auto;font-size:11.5px;color:var(--faint);letter-spacing:.04em}
+.zone.testnet{--zc:var(--violet);--zc-line:rgba(122,92,255,.4);--zc-fill:rgba(122,92,255,.11);--zc-glow:rgba(122,92,255,.12)}
+.zone.services{--zc:#5ec8ff;--zc-line:rgba(94,200,255,.38);--zc-fill:rgba(94,200,255,.1);--zc-glow:rgba(94,200,255,.11)}
+/* the honorary shelf is deliberately quieter than the flagship one:
+   warm accent, dashed frame, smaller tiles */
+.zone.honorary{--zc:#ffb04b;--zc-line:rgba(255,176,75,.38);--zc-fill:rgba(255,176,75,.1);--zc-glow:rgba(255,176,75,.11);
+  border-style:dashed}
+.zone.honorary .nfts{grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
+.zone.honorary .nft{border-radius:14px}
+.zone.honorary .nft .cap .t{font-size:11px;letter-spacing:.03em}
+
+/* ── heartbeat traces ───────────────────────────────────────────────
+   Mainnet reads as a pulse: an organic ECG sweeping fast and smooth.
+   Testnet reads as a signal: a slower, stepped square wave. */
+.ecg{--ec:var(--up);--eg:rgba(61,220,151,.6);width:100%;height:22px;display:block;overflow:visible}
+.ecg .base{fill:none;stroke:var(--line-strong);stroke-width:1}
+.ecg .pulse{fill:none;stroke:var(--ec);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 0 4px var(--eg))}
+.ecg.t-test{--ec:var(--violet);--eg:rgba(122,92,255,.6)}
+.ecg.t-down{--ec:var(--down);--eg:rgba(255,77,94,.6)}
+.ecg.t-idle{--ec:var(--faint);--eg:rgba(109,102,128,.45)}
+
+.ecg.beat .pulse{stroke-dasharray:34 260;animation:ecg-beat 2.6s linear infinite}
+@keyframes ecg-beat{from{stroke-dashoffset:294}to{stroke-dashoffset:0}}
+
+.ecg.wave .pulse{stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;
+  stroke-dasharray:52 240;animation:ecg-wave 4.6s steps(26,end) infinite}
+@keyframes ecg-wave{from{stroke-dashoffset:292}to{stroke-dashoffset:0}}
+
+.ecg.flat .pulse{animation-duration:7s;opacity:.42}
+
+/* ── socials ───────────────────────────────────── */
+.socials{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:14px}
+.social{
+  position:relative;display:flex;align-items:center;gap:16px;padding:22px 24px;border:1px solid var(--line);border-radius:16px;
+  background:var(--panel);overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,background .35s;
+}
+.social::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .45s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,46,126,.14),transparent 62%)}
+.social:hover{transform:translateY(-4px);border-color:var(--line-strong);background:rgba(255,255,255,.05)}
+.social:hover::after{opacity:1}
+.social .ic{flex:none;width:42px;height:42px;display:grid;place-items:center;border-radius:11px;border:1px solid var(--line);
+  background:rgba(255,255,255,.035);color:var(--txt);transition:border-color .35s,background .35s,color .35s}
+.social:hover .ic{border-color:rgba(255,46,126,.5);background:rgba(255,46,126,.11);color:#fff}
+.social .ic svg{width:19px;height:19px;fill:currentColor}
+.social .nm{font-size:14.5px;font-weight:500;letter-spacing:.01em}
+.social .hd{font-size:11.5px;color:var(--faint);letter-spacing:.05em}
+.social .go{margin-left:auto;color:var(--faint);transition:transform .3s,color .3s;font-size:15px}
+.social:hover .go{transform:translate(3px,-3px);color:var(--pink)}
+
+/* ── nfts ──────────────────────────────────────── */
+.nfts{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.nft{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s}
+.nft:hover{transform:translateY(-6px);border-color:rgba(255,46,126,.4)}
+.nft .shot{position:relative;aspect-ratio:1;overflow:hidden;background:linear-gradient(140deg,rgba(255,46,126,.12),rgba(122,92,255,.12))}
+.nft .shot img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.nft:hover .shot img{transform:scale(1.07)}
+.nft .shot::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(5,4,10,.88),transparent 52%)}
+.nft .cap{position:absolute;left:0;right:0;bottom:0;padding:15px 17px;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.nft .cap .t{font-size:12.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;line-height:1.3}
+.nft .cap .s{font-size:10px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.nft .cap .go{color:var(--faint);font-size:15px;transition:transform .3s,color .3s;flex:none}
+.nft:hover .cap .go{transform:translate(3px,-3px);color:var(--pink)}
+
+/* ── section switch ─────────────────────────────────────────────────
+   These were pill chips and new visitors read them as decoration, so
+   each section now announces itself: icon, name, and what is inside.
+   The active card is lit and points down at its panel. */
+.switch{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:34px}
+.sw{position:relative;display:flex;align-items:center;gap:14px;padding:18px 18px;border-radius:16px;
+  border:1px solid var(--line-strong);background:rgba(255,255,255,.035);cursor:pointer;text-align:left;
+  font-family:var(--sans);color:var(--txt);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s,box-shadow .3s}
+.sw:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.07)}
+.sw:focus-visible{outline:2px solid var(--violet);outline-offset:3px}
+.sw-ic{flex:none;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);transition:.35s}
+.sw-ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.sw-tx{display:flex;flex-direction:column;gap:3px;min-width:0}
+.sw-tx b{font-size:14px;font-weight:500;letter-spacing:.02em}
+.sw-tx em{font-style:normal;font-size:11px;color:var(--faint);letter-spacing:.03em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sw .led{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none;margin-left:auto;
+  transition:background .4s,box-shadow .4s}
+.sw .led.up{background:var(--up);box-shadow:0 0 9px 1px rgba(61,220,151,.8)}
+.sw .led.bad{background:var(--down);box-shadow:0 0 9px 1px rgba(255,77,94,.8)}
+
+.sw.on{border-color:rgba(255,46,126,.55);
+  background:linear-gradient(155deg,rgba(255,46,126,.17),rgba(122,92,255,.15));
+  box-shadow:0 14px 44px -18px rgba(255,46,126,.85),inset 0 1px 0 rgba(255,255,255,.1)}
+.sw.on .sw-ic{border-color:transparent;color:#fff;
+  background:linear-gradient(140deg,var(--pink),var(--violet));
+  box-shadow:0 6px 18px -8px rgba(255,46,126,.9)}
+.sw.on .sw-tx em{color:var(--muted)}
+/* the notch that ties the lit card to the panel underneath */
+.sw.on::after{content:'';position:absolute;left:50%;bottom:-7px;width:12px;height:12px;
+  transform:translateX(-50%) rotate(45deg);border-radius:2px;
+  background:#1a0e1c;border-right:1px solid rgba(255,46,126,.55);border-bottom:1px solid rgba(255,46,126,.55)}
+
+.panel{display:none}
+.panel.on{display:block;animation:fade .45s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+
+/* ── validators ────────────────────────────────── */
+.vals{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
+.val{position:relative;padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--panel);
+  display:flex;flex-direction:column;gap:16px;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,background .35s}
+.val:hover{transform:translateY(-4px);border-color:var(--line-strong);background:rgba(255,255,255,.048)}
+.val-top{display:flex;align-items:center;gap:13px}
+.val-top img{width:38px;height:38px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.055);padding:5px;flex:none}
+.val-nm{font-size:15px;font-weight:500;line-height:1.25}
+.val-sym{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.1em}
+.tag{margin-left:auto;flex:none;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:999px;
+  border:1px solid rgba(61,220,151,.3);color:var(--up);background:rgba(61,220,151,.08)}
+.tag.test{border-color:rgba(122,92,255,.35);color:#a893ff;background:rgba(122,92,255,.1)}
+.val-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.val-meta b{font-weight:500;color:var(--txt);font-family:var(--mono);font-size:12px}
+.addr{display:block;font-family:var(--mono);font-size:10.5px;color:var(--faint);word-break:break-all;line-height:1.5;
+  border-left:1px solid var(--line-strong);padding-left:10px}
+.addr.link{transition:color .3s,border-color .3s}
+.addr.link:hover{color:var(--txt);border-left-color:var(--violet)}
+.val-acts{display:flex;margin-top:auto;padding-top:4px}
+.val-acts a{flex:1;text-align:center;justify-content:center}
+.val-acts .disabled{flex:1;text-align:center;padding:10px 12px;border-radius:999px;border:1px dashed var(--line);
+  font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)}
+
+/* ── endpoints ─────────────────────────────────── */
+.ep-list{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel)}
+.ep-row{display:grid;grid-template-columns:180px 1fr;gap:20px;padding:18px 24px;border-bottom:1px solid var(--line);transition:background .3s}
+.ep-row:last-child{border-bottom:none}
+.ep-row:hover{background:rgba(255,255,255,.03)}
+.ep-net{display:flex;align-items:center;gap:11px;font-size:14.5px;font-weight:500}
+.ep-net img{width:26px;height:26px;object-fit:contain;flex:none;opacity:.95}
+.ep-urls{display:flex;flex-direction:column;gap:7px;min-width:0}
+.ep-url{display:flex;align-items:center;gap:10px;min-width:0}
+.ep-kind{flex:none;width:34px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--pink);text-transform:uppercase;opacity:.9}
+.ep-copy{font-family:var(--mono);font-size:12px;color:var(--muted);background:rgba(255,255,255,.035);border:1px solid var(--line);
+  border-radius:8px;padding:6px 11px;cursor:pointer;transition:.25s;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  text-align:left;max-width:100%}
+.ep-copy:hover{color:#fff;border-color:rgba(122,92,255,.5);background:rgba(122,92,255,.1)}
+.ep-copy.done{color:var(--up);border-color:rgba(61,220,151,.45);background:rgba(61,220,151,.09)}
+.panel-foot{margin-top:22px;font-size:12.5px;color:var(--faint);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.panel-foot a{color:var(--muted);border-bottom:1px solid var(--line-strong);transition:.25s}
+.panel-foot a:hover{color:var(--pink);border-color:var(--pink)}
+
+/* ── status ────────────────────────────────────────────────────────
+   Live figures from the monitors, arranged as our own instrument
+   panel: one headline gauge, the two feeds that produce it, then a
+   card per service with its own trace. */
+.st-hero{display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,4vw,48px);align-items:center;
+  border:1px solid var(--line);border-radius:20px;padding:clamp(26px,4vw,40px);margin-bottom:18px;
+  background:linear-gradient(150deg,rgba(61,220,151,.07),rgba(122,92,255,.06));position:relative;overflow:hidden}
+.st-hero.bad{background:linear-gradient(150deg,rgba(255,77,94,.1),rgba(122,92,255,.06))}
+.st-hero::before{content:'';position:absolute;width:340px;height:340px;border-radius:50%;left:-60px;top:-130px;
+  background:radial-gradient(circle,rgba(61,220,151,.22),transparent 66%);filter:blur(50px)}
+.st-hero.bad::before{background:radial-gradient(circle,rgba(255,77,94,.26),transparent 66%)}
+.st-hero > *{position:relative}
+
+.gauge{width:132px;height:132px;flex:none;position:relative;display:grid;place-items:center}
+.gauge svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.gauge .trk{fill:none;stroke:rgba(255,255,255,.08);stroke-width:5}
+.gauge .arc{fill:none;stroke:var(--up);stroke-width:5;stroke-linecap:round;
+  transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1),stroke .6s;
+  filter:drop-shadow(0 0 8px rgba(61,220,151,.55))}
+.st-hero.bad .gauge .arc{stroke:var(--down);filter:drop-shadow(0 0 8px rgba(255,77,94,.55))}
+.gauge .v{font-family:var(--serif);font-size:32px;line-height:1;letter-spacing:-.01em}
+.gauge .l{font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);margin-top:5px}
+
+.st-headline{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3.2vw,34px);line-height:1.1;margin:0 0 8px}
+.st-sub{color:var(--muted);font-size:13.5px;margin:0 0 20px}
+.st-sub b{color:var(--txt);font-weight:500;font-family:var(--mono);font-size:13px}
+.st-feeds{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.st-refresh{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);
+  border:1px solid var(--line);border-radius:999px;padding:8px 16px;background:transparent;cursor:pointer;
+  font-family:var(--sans);transition:.3s}
+.st-refresh:hover{color:#fff;border-color:rgba(122,92,255,.5);background:rgba(122,92,255,.1)}
+.st-refresh[disabled]{opacity:.5;cursor:default}
+
+.st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
+.st-card{border:1px solid var(--line);border-radius:15px;padding:18px 19px 15px;background:var(--panel);
+  display:flex;flex-direction:column;gap:13px;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s}
+.st-card:hover{transform:translateY(-3px);border-color:var(--line-strong)}
+.st-card.down{border-color:rgba(255,77,94,.4);background:rgba(255,77,94,.05)}
+.st-card.pending{border-style:dashed}
+.st-card.pending .up,.st-card.pending .nm{color:var(--muted)}
+.st-card-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.st-card .nm{font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-card .up{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--up);flex:none}
+.st-card.down .up{color:var(--down)}
+.st-card .up small{font-size:9px;color:var(--faint);letter-spacing:.14em;margin-left:3px}
+.st-card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.st-card-foot .state{color:var(--up)}
+.st-card.down .st-card-foot .state{color:var(--down)}
+
+.st-msg{padding:26px 24px;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--muted);font-size:14px}
+.st-msg b{color:var(--txt);font-weight:500}
+.st-msg code{font-family:var(--mono);font-size:12px;color:var(--pink);background:rgba(255,46,126,.08);padding:2px 6px;border-radius:5px}
+.st-skel{height:104px;border:1px solid var(--line);border-radius:15px;position:relative;overflow:hidden;background:var(--panel)}
+.st-skel::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.045),transparent);
+  animation:sweep 1.4s infinite}
+@keyframes sweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+
+/* ── explorer ──────────────────────────────────── */
+.explorer{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  background:linear-gradient(150deg,rgba(122,92,255,.10),rgba(255,46,126,.07));
+  padding:clamp(34px,6vw,62px)}
+.explorer::before{content:'';position:absolute;width:420px;height:420px;border-radius:50%;right:-90px;top:-150px;
+  background:radial-gradient(circle,rgba(122,92,255,.35),transparent 65%);filter:blur(60px)}
+.explorer > *{position:relative}
+.explorer h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3.4vw,38px);margin:0 0 12px;line-height:1.12}
+.explorer p{color:var(--muted);margin:0 0 30px;font-size:15px;max-width:46ch}
+
+/* ── cta band ──────────────────────────────────── */
+.band{position:relative;border:1px solid var(--line);border-radius:26px;padding:clamp(38px,6vw,72px);text-align:center;overflow:hidden;
+  background:linear-gradient(160deg,rgba(255,46,126,.09),rgba(122,92,255,.09))}
+.band::before{content:'';position:absolute;width:520px;height:520px;border-radius:50%;left:50%;top:120%;transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(255,46,126,.35),transparent 65%);filter:blur(60px)}
+.band > *{position:relative}
+.band h2{margin-bottom:12px}
+.band p{color:var(--muted);max-width:52ch;margin:0 auto 32px}
+.band img.mini{width:78px;margin:0 auto 22px;filter:drop-shadow(0 0 22px rgba(255,46,126,.45))}
+
+/* ── footer ────────────────────────────────────── */
+footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-index:2}
+.foot{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+.foot p{margin:0;font-size:12.5px;color:var(--faint)}
+.foot-links{display:flex;gap:12px}
+.foot-links a{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;border:1px solid var(--line);color:var(--muted);transition:.3s}
+.foot-links a:hover{color:#fff;border-color:rgba(255,46,126,.55);background:rgba(255,46,126,.1);transform:translateY(-2px)}
+.foot-links svg{width:15px;height:15px;fill:currentColor}
+
+/* ── reveal ────────────────────────────────────── */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+@media (max-width:1080px){
+  .switch{grid-template-columns:repeat(2,1fr);gap:11px}
+  .sw.on::after{display:none}
+}
+@media (max-width:430px){
+  .switch{grid-template-columns:1fr}
+  .sw{padding:15px 16px}
+}
+@media (max-width:920px){
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .hero{padding-top:104px}
+  .hero-grid > div:first-child{order:2}
+  .cat-stage{order:1;margin-bottom:6px}
+  .cat{width:min(74%,300px)}
+  .hero-cta{justify-content:center}
+  .kicker::after{display:none}
+  .sec-head{margin-inline:auto}
+  .nav-links{display:none}
+  .ep-row{grid-template-columns:1fr;gap:14px}
+  .st-hero{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .st-feeds{justify-content:center}
+  .zone{padding:22px 17px 20px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div class="field"></div>
+<div class="grid-lines"></div>
+<div class="grain"></div>
+
+<header id="hd">
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <img class="mark" src="assets/gata-logo.jpg" alt="GATA HUB" />
+      GATA HUB
+    </a>
+    <nav class="nav-links">
+      <a href="#community">Community</a>
+      <a href="#nfts">NFTs</a>
+      <a href="#infrastructure">Infrastructure</a>
+    </nav>
+    <a class="btn sm" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter the App <span class="arw">→</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow rv"><span class="dot"></span> Infrastructure and NFTfi since 2022</div>
+        <h1 class="rv">Catnip for the <span class="grad">decentralized</span> world of tomorrow.</h1>
+        <div class="hero-cta rv">
+          <a class="btn" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter the App <span class="arw">→</span></a>
+        </div>
+      </div>
+      <div class="cat-stage rv">
+        <div class="halo two"><i class="spark"></i></div>
+        <div class="halo"><i class="spark"></i></div>
+        <img class="cat" src="assets/gataCat.webp" alt="GATA cat mascot" />
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section id="community">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="kicker">Community</div>
+        <h2>Find us across the interchain.</h2>
+        <p>Every official GATA channel, in one place. Everything else is not us.</p>
+      </div>
+      <div class="socials" id="socialGrid"></div>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="rule"></div></div>
+
+  <!-- NFTS -->
+  <section id="nfts">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="kicker">NFTs</div>
+        <h2>Our collections.</h2>
+      </div>
+      <div class="rv">
+        <div class="zone nftzone">
+          <div class="zone-head">
+            <span class="zone-plate"><i class="sq"></i> GATA NFTs</span>
+            <span class="zone-count" id="nftYieldCount"></span>
+            <span class="zone-note">The Yield Series</span>
+          </div>
+          <div class="nfts" id="nftYield"></div>
+        </div>
+        <div class="zone nftzone honorary">
+          <div class="zone-head">
+            <span class="zone-plate"><i class="sq"></i> Souvenirs / Honorary</span>
+            <span class="zone-count" id="nftSouvenirCount"></span>
+            <span class="zone-note">Commemorative — not DAO membership</span>
+          </div>
+          <div class="nfts" id="nftSouvenir"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="rule"></div></div>
+
+  <!-- INFRASTRUCTURE -->
+  <section id="infrastructure">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="kicker">Infrastructure</div>
+        <h2>Validators, endpoints, explorer.</h2>
+      </div>
+
+      <div class="rv">
+        <div class="switch" role="tablist" aria-label="Infrastructure sections">
+          <button class="sw on" id="swValidators" data-p="validators" role="tab" aria-controls="p-validators" aria-selected="true">
+            <span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 9-4.1-1.1-7-4.8-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+            <span class="sw-tx"><b>Validators</b><em id="swValCount">Networks we secure</em></span>
+          </button>
+          <button class="sw" id="swEndpoints" data-p="endpoints" role="tab" aria-controls="p-endpoints" aria-selected="false">
+            <span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M9 7V3M15 7V3M7 7h10v5a5 5 0 0 1-10 0V7z"/><path d="M12 17v4"/></svg></span>
+            <span class="sw-tx"><b>Endpoints</b><em id="swEpCount">Public RPC &amp; API</em></span>
+          </button>
+          <button class="sw" id="swStatus" data-p="status" role="tab" aria-controls="p-status" aria-selected="false">
+            <span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 3 10 2.5-5H21"/></svg></span>
+            <span class="sw-tx"><b>Status</b><em id="swStatusNote">Live uptime</em></span>
+            <span class="led" id="statusLed"></span>
+          </button>
+          <button class="sw" id="swExplorer" data-p="explorer" role="tab" aria-controls="p-explorer" aria-selected="false">
+            <span class="sw-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.1 4.9-4.9 2.1 2.1-4.9 4.9-2.1z"/></svg></span>
+            <span class="sw-tx"><b>Explorer</b><em>Browse the chains</em></span>
+          </button>
+        </div>
+
+        <!-- validators -->
+        <div class="panel on" id="p-validators" role="tabpanel" aria-labelledby="swValidators" tabindex="0">
+          <div class="zone">
+            <div class="zone-head">
+              <span class="zone-plate"><i class="sq"></i> Mainnet</span>
+              <span class="zone-count" id="valMainCount"></span>
+              <span class="zone-note">5% commission</span>
+            </div>
+            <div class="vals" id="valMain"></div>
+          </div>
+          <div class="zone testnet">
+            <div class="zone-head">
+              <span class="zone-plate"><i class="sq"></i> Testnet</span>
+              <span class="zone-count" id="valTestCount"></span>
+              <span class="zone-note">Test networks</span>
+            </div>
+            <div class="vals" id="valTest"></div>
+          </div>
+        </div>
+
+        <!-- endpoints -->
+        <div class="panel" id="p-endpoints" role="tabpanel" aria-labelledby="swEndpoints" tabindex="0">
+          <div class="zone">
+            <div class="zone-head">
+              <span class="zone-plate"><i class="sq"></i> Mainnet</span>
+              <span class="zone-count" id="epMainCount"></span>
+              <span class="zone-note">Click to copy</span>
+            </div>
+            <div class="ep-list" id="epMain"></div>
+          </div>
+          <div class="zone testnet">
+            <div class="zone-head">
+              <span class="zone-plate"><i class="sq"></i> Testnet</span>
+              <span class="zone-count" id="epTestCount"></span>
+              <span class="zone-note">Click to copy</span>
+            </div>
+            <div class="ep-list" id="epTest"></div>
+          </div>
+        </div>
+
+        <!-- status -->
+        <div class="panel" id="p-status" role="tabpanel" aria-labelledby="swStatus" tabindex="0">
+          <div id="statusBody">
+            <div class="st-grid">
+              <div class="st-skel"></div><div class="st-skel"></div>
+              <div class="st-skel"></div><div class="st-skel"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- explorer -->
+        <div class="panel" id="p-explorer" role="tabpanel" aria-labelledby="swExplorer" tabindex="0">
+          <div class="explorer">
+            <h3>The GATA explorer.</h3>
+            <p>Block explorer for the networks GATA HUB validates.</p>
+            <a class="btn" href="https://explorer.gatahub.zone" target="_blank" rel="noopener">Open explorer <span class="arw">→</span></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="wrap">
+      <div class="band rv">
+        <img class="mini" src="assets/gataCat.webp" alt="" />
+        <h2>Ready to claim your rewards?</h2>
+        <p>NFT rewards, Staking perks, GATA loyalty and Raffles Live in the GATA reward app.</p>
+        <a class="btn" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter the App <span class="arw">→</span></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <p>© <span id="yr"></span> GATA HUB</p>
+    <div class="foot-links" id="footLinks"></div>
+  </div>
+</footer>
+
+<script>
+/* ── icons ─────────────────────────────────────── */
+const ICON = {
+  x:'<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+  discord:'<svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.6 12.6 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.1 14.1 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .079.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.028zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',
+  medium:'<svg viewBox="0 0 24 24"><path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12"/></svg>',
+  book:'<svg viewBox="0 0 24 24"><path d="M4 3h11a3 3 0 0 1 3 3v13.5a.5.5 0 0 1-.5.5H6a2 2 0 0 0-2 2zm2 2v11.17c.31-.11.65-.17 1-.17h9V6a1 1 0 0 0-1-1zm14 0h-1v16H6a1 1 0 0 0 0 2h14z"/></svg>',
+  tree:'<svg viewBox="0 0 24 24"><path d="M7.95 4.03 9.6 5.7 11 4.28V2h2v2.28l1.4 1.42 1.65-1.67 1.42 1.41-1.66 1.65 1.42 1.41H19.7v2h-2.47l-1.42 1.41 1.66 1.65-1.42 1.42-1.65-1.67-.4.4V22h-2v-8.29l-.4-.4-1.65 1.67-1.42-1.42 1.66-1.65-1.42-1.41H6.3v-2h2.47L10.19 7 8.53 5.44z"/></svg>',
+  github:'<svg viewBox="0 0 24 24"><path d="M12 .3a12 12 0 0 0-3.79 23.4c.6.1.82-.26.82-.58l-.01-2.04c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.75.09-.73.09-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.003 0c2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22l-.01 3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/></svg>',
+  telegram:'<svg viewBox="0 0 24 24"><path d="M23.91 3.79 20.3 20.84c-.25 1.21-.98 1.5-2 .94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.1.56-.72 0-.6-.27-.84-.95L6.3 13.7l-5.45-1.7c-1.18-.35-1.19-1.16.26-1.75l21.26-8.2c.97-.43 1.9.24 1.54 1.73z"/></svg>'
+};
+
+/* ── socials ───────────────────────────────────── */
+const SOCIALS = [
+  {ic:'x',       nm:'X · GATA HUB',   hd:'@GataHubZone',        url:'https://twitter.com/GataHubZone'},
+  {ic:'x',       nm:'X · GATA DAO',   hd:'@GataDaoZone',        url:'https://twitter.com/GataDaoZone'},
+  {ic:'telegram',nm:'Telegram',       hd:'t.me/gatahub',        url:'https://t.me/gatahub'},
+  {ic:'discord', nm:'Discord',        hd:'The GATA den',        url:'https://discord.gg/4MCrtaCetp'},
+  {ic:'medium',  nm:'Medium',         hd:'medium.com/gatadao',  url:'https://medium.com/gatadao'},
+  {ic:'book',    nm:'Documentation',  hd:'docs.gatahub.zone',   url:'https://docs.gatahub.zone/'},
+  {ic:'tree',    nm:'Linktree',       hd:'linktr.ee/gatahub',   url:'https://linktr.ee/gatahub'},
+  {ic:'github',  nm:'GitHub',         hd:'GATA-HUB',            url:'https://github.com/GATA-HUB/'}
+];
+
+document.getElementById('socialGrid').innerHTML = SOCIALS.map(s => `
+  <a class="social rv" href="${s.url}" target="_blank" rel="noopener">
+    <span class="ic">${ICON[s.ic]}</span>
+    <span><span class="nm">${s.nm}</span><br><span class="hd">${s.hd}</span></span>
+    <span class="go">↗</span>
+  </a>`).join('');
+
+document.getElementById('footLinks').innerHTML = SOCIALS
+  .filter((s, i) => i !== 1)
+  .map(s => `<a href="${s.url}" target="_blank" rel="noopener" aria-label="${s.nm}">${ICON[s.ic]}</a>`).join('');
+
+/* ── nft collections ───────────────────────────── */
+/* Yield Series covers were pulled from the collection metadata (IPFS);
+   souvenir covers come from gatahub.zone. All served locally. */
+const YIELD = [
+  {nm:'PengOnes',       img:'assets/nft/pengones.webp',      on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1dvx9q8ck866qmpqpqdy3guqt96579x9ukn6qxx6mtf4x5gxfzfqschuxlw'},
+  {nm:'Colonial Cats',  img:'assets/nft/colonial-cats.webp', on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1q2a8pl96nm3t4xnzpe5q96f3je7awssqh2js4er4wdv66e44kf4qd37k5w'},
+  {nm:'Voyager Cats',   img:'assets/nft/voyager-cats.webp',  on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1rprz62z0vpa6ex0wcwmqkq6ls3cye9wea5lfshpg8fm2ztg28znsy4jzww'},
+  {nm:'GATA Pixels',    img:'assets/nft/gata-pixels.webp',   on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1rusfnupu3wp0txmc8mw3jn88sx9f7vx4j9m3lcvh7dc3fkxvshpsprsx5h'},
+  {nm:'Yield Walkers',  img:'assets/nft/yield-walkers.webp', on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1mzr08swy3m6fx8xgmmfd5cf3wvjgsef8pnv9saacly03s3w4n5jq7qq9st'},
+  {nm:'Yield Paws',     img:'assets/nft/yield-paws.webp',    on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1te4992utv2kyfguf6lad2szsunj29gqqsvjzqdsfh9g62yeuvclsvvtl8t'},
+  {nm:'Yield Crocs',    img:'assets/nft/yield-crocs.webp',   on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1q5rhds0ufc8r4l6n3asjf90vpkq8vvmutrxsnl9sgx5rmqz83eds7ssfa5'},
+  {nm:'Yield Gorillas', img:'assets/nft/yield-gorillas.webp',on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1a4uanyytpvx0cq043yljlf0phhy2h95t6wsraprhnryyaqzdjw2sl3z5rn'}
+];
+
+const SOUVENIRS = [
+  {nm:'GATA HUB: 3rd Anniversary', img:'assets/nft/souvenir-3rd-anniversary.webp', on:'Omniflix',
+   url:'https://omniflix.market/c/nonTransferable/onftdenom5841d7530dfd4dd0b61093389896aae8'},
+  {nm:'GATA Horizons',             img:'assets/nft/souvenir-horizons.webp',        on:'Stargaze',
+   url:'https://www.stargaze.zone/m/stars1udmfnrewelppflnl698j4m85q04rpm3h9vtzlu9286vxalfq6nxs5dzzkm/tokens'},
+  {nm:'GATA GAZE 7',               img:'assets/nft/souvenir-gg7.webp',            on:'Stargaze',
+   url:'https://www.stargaze.zone/m/stars1xz3h6pvmvfygcpnyx95q7myk94vn9hf0mhyy78qy4vzp3w9qmdnqm03ue9/tokens'},
+  {nm:'Xmas Greetings 2024',       img:'assets/nft/souvenir-xmas-2024.webp',       on:'Stargaze',
+   url:'https://www.stargaze.zone/m/stars13u6ugmja48etdpy5gaf6hnkmx8gw05fkcg0wr9ry65qc5nm39cpqc3tt3x/tokens'},
+  {nm:'Xmas Greetings 2023',       img:'assets/nft/souvenir-xmas-2023.webp',       on:'Stargaze',
+   url:'https://www.stargaze.zone/m/stars1nssvsnfef3qpzy7a798c40mjevxky0l87admpezu4z4a36fye6yql244v8/tokens'},
+  {nm:'Delegator Rewards 2024',    img:'assets/nft/souvenir-delegator-2024.webp',  on:'Omniflix',
+   url:'https://omniflix.market/c/onftdenom98a328b68f994118af813e69723f2cf6'},
+  {nm:'Delegator Reward 2023',     img:'assets/nft/souvenir-delegator-2023.webp',  on:'Omniflix',
+   url:'https://omniflix.market/collection/onftdenom20f3bdc8be264bd8a17c39bbb3c6a421'},
+  {nm:'GATA x Omniflix 4/20',      img:'assets/nft/souvenir-omniflix-420.webp',    on:'Omniflix',
+   url:'https://omniflix.market/collection/onftdenoma6a057db64674de0b129e9b5c087d404'}
+];
+
+const nftCard = n => `
+  <a class="nft" href="${n.url}" target="_blank" rel="noopener">
+    <div class="shot"><img src="${n.img}" alt="${n.nm}" loading="lazy" /></div>
+    <div class="cap">
+      <span><span class="t">${n.nm}</span><br><span class="s">${n.on}</span></span>
+      <span class="go">↗</span>
+    </div>
+  </a>`;
+
+document.getElementById('nftYield').innerHTML = YIELD.map(nftCard).join('');
+document.getElementById('nftSouvenir').innerHTML = SOUVENIRS.map(nftCard).join('');
+document.getElementById('nftYieldCount').textContent = YIELD.length + ' collections';
+document.getElementById('nftSouvenirCount').textContent = SOUVENIRS.length + ' drops';
+
+/* ── validators ────────────────────────────────── */
+const VAL_MAIN = [
+  {nm:'Akash',      sym:'AKT',   ic:'akt',      addr:'akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak',
+   stake:'https://wallet.keplr.app/chains/akash?modal=validator&chain=akashnet-2&validator_address=akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak'},
+  {nm:'AtomOne',    sym:'ATONE', ic:'atomone',  addr:'atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f',
+   stake:'https://explorer.allinbits.services/atomone/staking/atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f'},
+  {nm:'Cosmos Hub', sym:'ATOM',  ic:'cosmos',   addr:'cosmosvaloper10unx6s0cdqntvrumd5hs07rgd5ytcztqh8etw6',
+   stake:'https://wallet.keplr.app/chains/cosmos-hub'},
+  {nm:'Juno',       sym:'JUNO',  ic:'junologo', addr:'junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2',
+   stake:'https://wallet.keplr.app/#/juno/stake?modal=stake&validator=junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2&all-list=true'},
+  {nm:'Nomic',      sym:'NOM',   ic:'nomic',    addr:'nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7',
+   stake:'https://app.nomic.io/#/staking?validator=nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7&modal=delegation'},
+  {nm:'Osmosis',    sym:'OSMO',  ic:'osmosis',  addr:'osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h',
+   stake:'https://wallet.keplr.app/chains/osmosis?modal=validator&chain=osmosis-1&validator_address=osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h&referral=true'},
+  {nm:'Passage',    sym:'PASG',  ic:'passage',  addr:'pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv',
+   stake:'https://wallet.keplr.app/chains/passage?tab=staking&modal=staking&chain=passage-2&validator_address=pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv&step_id=3&action_id=stake'}
+];
+
+const VAL_TEST = [
+  {nm:'Cosmos Hub Testnet', sym:'PROVIDER', ic:'cosmos',  addr:'cosmosvaloper18rw0prhskw38kt99ypae4ka46k9js58u48un4z',
+   explorer:'https://testnet.ping.pub/cosmos/staking/cosmosvaloper18rw0prhskw38kt99ypae4ka46k9js58u48un4z'},
+  {nm:'AtomOne Testnet',    sym:'ATONE',    ic:'atomone', addr:'atonevaloper18rw0prhskw38kt99ypae4ka46k9js58uuwlg93',
+   explorer:'https://explorer.hazennetworksolutions.com/atomone-testnet/validator/?address=atonevaloper18rw0prhskw38kt99ypae4ka46k9js58uuwlg93'},
+  {nm:'Gno.land Topaz',     sym:'GNOT',     ic:'gnoland', addr:''}
+];
+
+/* Two traces: 'beat' for mainnet, 'wave' for testnet. */
+const ECG_PATH = {
+  beat: 'M0 11 H34 l5 -7 l4 14 l5 -9 l4 4 H108 l5 -7 l4 14 l5 -9 l4 4 H182 l5 -7 l4 14 l5 -9 l4 4 H260',
+  wave: 'M0 15 H26 V7 H52 V15 H78 V7 H104 V15 H130 V7 H156 V15 H182 V7 H208 V15 H234 V7 H260'
+};
+
+/* tone: 'up' | 'test' | 'down' | 'idle' — colour comes from a class, not an
+   inline value, so no runtime colour maths is needed. */
+const ecg = (kind, tone, flat) => `
+  <svg class="ecg ${kind}${tone && tone !== 'up' ? ' t-' + tone : ''}${flat ? ' flat' : ''}"
+       viewBox="0 0 260 22" preserveAspectRatio="none" aria-hidden="true">
+    <path class="base" d="M0 11 H260" />
+    <path class="pulse" d="${ECG_PATH[kind]}" />
+  </svg>`;
+
+const valCard = (v, testnet) => `
+  <article class="val">
+    <div class="val-top">
+      <img src="assets/validators/${v.ic}.png" alt="" />
+      <div>
+        <div class="val-nm">${v.nm}</div>
+        <div class="val-sym">${v.sym}</div>
+      </div>
+      <span class="tag${testnet ? ' test' : ''}">${testnet ? 'Testnet' : 'Active'}</span>
+    </div>
+    ${testnet ? '' : '<div class="val-meta"><span>Commission</span><b>5.00%</b></div>'}
+    ${ecg(testnet ? 'wave' : 'beat', testnet ? 'test' : 'up')}
+    ${v.addr
+      ? (v.explorer
+          ? `<a class="addr link" href="${v.explorer}" target="_blank" rel="noopener">${v.addr}</a>`
+          : `<div class="addr">${v.addr}</div>`)
+      : ''}
+    ${testnet ? '' : `<div class="val-acts">
+      ${v.stake ? `<a class="btn sm" href="${v.stake}" target="_blank" rel="noopener">Stake</a>`
+                : `<span class="disabled">Soon</span>`}
+    </div>`}
+  </article>`;
+
+document.getElementById('valMain').innerHTML = VAL_MAIN.map(v => valCard(v, false)).join('');
+document.getElementById('valTest').innerHTML = VAL_TEST.map(v => valCard(v, true)).join('');
+document.getElementById('valMainCount').textContent = VAL_MAIN.length + ' networks';
+document.getElementById('valTestCount').textContent = VAL_TEST.length + ' networks';
+document.getElementById('swValCount').textContent =
+  VAL_MAIN.length + ' mainnet · ' + VAL_TEST.length + ' testnet';
+
+/* ── endpoints ─────────────────────────────────── */
+const EP_MAIN = [
+  {nm:'AtomOne',    ic:'atomone',  rpc:'https://atomone-rpc.gatadao.com',   api:'https://atomone-api.gatadao.com'},
+  {nm:'Akash',      ic:'akt',      rpc:'https://akash-rpc.gatadao.com',     api:'https://akash-api.gatadao.com'},
+  {nm:'Cosmos Hub', ic:'cosmos',   rpc:'https://cosmoshub-rpc.gatadao.com', api:'https://cosmoshub-api.gatadao.com'},
+  {nm:'Juno',       ic:'junologo', rpc:'https://juno-rpc.gatadao.com',      api:'https://juno-api.gatadao.com'},
+  {nm:'Osmosis',    ic:'osmosis',  rpc:'https://osmosis-rpc.gatadao.com',   api:'https://osmosis-api.gatadao.com'},
+  {nm:'Passage',    ic:'passage',  rpc:'https://passage-rpc.gatadao.com',   api:'https://passage-api.gatadao.com'},
+  {nm:'Nomic BTC',  ic:'nomic',    rpc:'https://nomic-rpc.gatadao.com'}
+];
+
+const EP_TEST = [
+  {nm:'AtomOne Testnet',    ic:'atomone', rpc:'https://atomone-testnet-rpc.gatadao.com', api:'https://atomone-testnet-api.gatadao.com'},
+  {nm:'Cosmos Hub Testnet', ic:'cosmos',  rpc:'https://provider-rpc.gatadao.com',        api:'https://provider-api.gatadao.com'}
+];
+
+const epRow = n => `
+  <div class="ep-row">
+    <div class="ep-net"><img src="assets/validators/${n.ic}.png" alt="" />${n.nm}</div>
+    <div class="ep-urls">
+      ${['rpc','api'].filter(k => n[k]).map(k => `
+        <div class="ep-url">
+          <span class="ep-kind">${k}</span>
+          <button class="ep-copy" data-v="${n[k]}" title="Copy">${n[k]}</button>
+        </div>`).join('')}
+    </div>
+  </div>`;
+
+document.getElementById('epMain').innerHTML = EP_MAIN.map(epRow).join('');
+document.getElementById('epTest').innerHTML = EP_TEST.map(epRow).join('');
+document.getElementById('epMainCount').textContent = EP_MAIN.length + ' networks';
+document.getElementById('epTestCount').textContent = EP_TEST.length + ' networks';
+document.getElementById('swEpCount').textContent =
+  (EP_MAIN.length + EP_TEST.length) + ' networks · RPC & API';
+
+/* ── live status ───────────────────────────────────────────────────────
+   Two monitoring feeds sit behind this panel:
+
+     Uptime Kuma  uptime.gatadao.com   per-service heartbeats + 24h uptime
+     BetterStack  gatahub.gatadao.com  hosted status page, overall state
+
+   Neither sends an Access-Control-Allow-Origin header, and Uptime Kuma
+   also blocks framing, so both are read through same-origin proxy paths.
+   See server.js for the dev proxy and the nginx snippets for production.
+   ------------------------------------------------------------------- */
+const UPTIME_BASE  = '/api/uptime';
+const UPTIME_SLUG  = 'validators';
+const KUMA_PAGE    = 'https://uptime.gatadao.com/status/' + UPTIME_SLUG;
+const KUMA_PROBE   = '/api/kuma/status/' + UPTIME_SLUG;   /* the status page itself */
+const BSTACK_BASE  = '/api/betterstack';
+const BSTACK_PAGE  = 'https://gatahub.gatadao.com/';
+
+/* Monitors still configured upstream for networks we no longer list. */
+const STATUS_HIDE = ['namada', 'stargaze'];
+
+const statusBody    = document.getElementById('statusBody');
+const statusLed     = document.getElementById('statusLed');
+const swStatusNote  = document.getElementById('swStatusNote');
+let statusLoaded = false;
+let lastStatusAt = 0;
+
+const pct = (v, dp) => (v * 100).toFixed(dp === undefined ? (v >= 0.9995 ? 1 : 2) : dp) + '%';
+
+/* Split the monitors into the same zones the rest of the page uses. */
+function zoneOf(name) {
+  const n = name.toLowerCase();
+  if (/testnet|topaz|provider/.test(n)) return 'testnet';
+  if (/website|tenderduty|explorer|reward|docs/.test(n)) return 'services';
+  return 'mainnet';
+}
+
+const ZONES = [
+  {key:'mainnet',  cls:'',          label:'Mainnet'},
+  {key:'testnet',  cls:'testnet',   label:'Testnet'},
+  {key:'services', cls:'services',  label:'Services'}
+];
+
+function renderStatus(cfg, hb, bstack, kuma) {
+  const monitors = (cfg.publicGroupList || [])
+    .flatMap(g => g.monitorList || [])
+    .filter(m => !STATUS_HIDE.includes((m.name || '').trim().toLowerCase()));
+  if (!monitors.length) throw new Error('no monitors published');
+
+  let down = 0, newest = 0, upSum = 0, upCount = 0;
+
+  const enriched = monitors.map(m => {
+    const beats = (hb.heartbeatList && hb.heartbeatList[m.id]) || [];
+    const last  = beats[beats.length - 1];
+    const up24  = hb.uptimeList ? hb.uptimeList[m.id + '_24'] : undefined;
+    const ok    = !last || last.status === 1;
+
+    if (last && last.status === 0) down++;
+    if (last) newest = Math.max(newest, Date.parse(last.time.replace(' ', 'T') + 'Z') || 0);
+    if (up24 !== undefined) { upSum += up24; upCount++; }
+
+    return {name:m.name, up24, ok, has:!!last, zone:zoneOf(m.name)};
+  });
+
+  /* Services we surface ourselves. 'Uptime' is the hosted status page, whose
+     own state comes from its badge; 'Kuma' is the self-hosted status page,
+     probed directly; the explorer is listed ahead of being monitored. */
+  enriched.push({
+    name:'Uptime', up24:undefined, ok: bstack ? bstack.ok : true,
+    has:!!bstack, zone:'services', href:BSTACK_PAGE
+  });
+  if (bstack && !bstack.ok) down++;
+
+  enriched.push({
+    name:'Kuma', up24:undefined, ok: kuma ? kuma.ok : true,
+    has:!!kuma, zone:'services', href:KUMA_PAGE
+  });
+  if (kuma && !kuma.ok) down++;
+
+  enriched.push({
+    name:'Explorer', up24:undefined, ok:true, has:false, pending:true,
+    zone:'services', href:'https://explorer.gatahub.zone'
+  });
+
+  const allGood = down === 0;
+  const avg     = upCount ? upSum / upCount : 0;
+  const checked = newest
+    ? new Date(newest).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+    : '—';
+
+  /* gauge arc: r=62 -> circumference ~389.6 */
+  const C = 2 * Math.PI * 62;
+  const arc = C * (1 - (upCount ? avg : 0));
+
+  const card = s => {
+    const tone = s.pending ? 'idle' : s.ok ? 'up' : 'down';
+    const kind = s.zone === 'testnet' ? 'wave' : 'beat';
+    const state = s.pending ? 'Not monitored yet' : !s.has ? 'No data' : s.ok ? '' : 'Down';
+
+    const inner = `
+      <div class="st-card-top">
+        <span class="nm">${s.name}</span>
+        <span class="up">${s.up24 === undefined ? '—' : pct(s.up24)}${s.up24 === undefined ? '' : '<small>24H</small>'}</span>
+      </div>
+      ${ecg(kind, tone, !s.has)}
+      <div class="st-card-foot">
+        <span class="state">${state}</span>
+        <span>${s.zone === 'services' ? 'Service' : s.zone}</span>
+      </div>`;
+
+    const cls = `st-card${s.ok ? '' : ' down'}${s.pending ? ' pending' : ''}`;
+    return s.href
+      ? `<a class="${cls}" href="${s.href}" target="_blank" rel="noopener">${inner}</a>`
+      : `<article class="${cls}">${inner}</article>`;
+  };
+
+  const zones = ZONES.map(z => {
+    const items = enriched.filter(s => s.zone === z.key);
+    if (!items.length) return '';
+    const bad = items.filter(s => !s.ok).length;
+    return `<div class="zone ${z.cls}">
+      <div class="zone-head">
+        <span class="zone-plate"><i class="sq"></i> ${z.label}</span>
+        <span class="zone-count">${items.length} monitored</span>
+        ${bad ? `<span class="zone-note">${bad} down</span>` : ''}
+      </div>
+      <div class="st-grid">${items.map(card).join('')}</div>
+    </div>`;
+  }).join('');
+
+  statusBody.innerHTML = `
+    <div class="st-hero${allGood ? '' : ' bad'}">
+      <div class="gauge">
+        <svg viewBox="0 0 132 132">
+          <circle class="trk" cx="66" cy="66" r="62" />
+          <circle class="arc" cx="66" cy="66" r="62"
+                  stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${arc.toFixed(1)}" />
+        </svg>
+        <div style="text-align:center">
+          <div class="v">${upCount ? pct(avg, avg >= 0.9995 ? 1 : 2) : '—'}</div>
+          <div class="l">24h uptime</div>
+        </div>
+      </div>
+      <div>
+        <h3 class="st-headline">${allGood
+          ? 'Every service is answering.'
+          : down + ' service' + (down > 1 ? 's are' : ' is') + ' not answering.'}</h3>
+        <p class="st-sub"><b>${enriched.length}</b> monitors across mainnets, testnets and
+          services · last check <b>${checked}</b></p>
+        <div class="st-feeds">
+          <button class="st-refresh" id="stRefresh">Refresh</button>
+        </div>
+      </div>
+    </div>
+    ${zones}`;
+
+  statusLed.className = 'led ' + (allGood ? 'up' : 'bad');
+  swStatusNote.textContent = allGood
+    ? enriched.length + ' services · all up'
+    : down + ' of ' + enriched.length + ' down';
+
+  document.getElementById('stRefresh').addEventListener('click', e => {
+    e.target.disabled = true;
+    e.target.textContent = 'Refreshing…';
+    loadStatus();
+  });
+}
+
+/* The monitor feed itself is down. Say so plainly, in the same instrument
+   panel, and keep whatever the second feed still reports. */
+function renderOutage(bstack, kuma) {
+  const C = 2 * Math.PI * 62;
+  const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+
+  const services = [
+    {name:'Uptime', ok: bstack ? bstack.ok : false, has:!!bstack, href:BSTACK_PAGE,
+     state: bstack ? (bstack.ok ? '' : 'Down') : 'No data'},
+    {name:'Kuma',   ok:false, has:true, href:KUMA_PAGE, state:'Down'},
+    {name:'Explorer', ok:true, has:false, pending:true, href:'https://explorer.gatahub.zone',
+     state:'Not monitored yet'}
+  ];
+
+  const card = s => `
+    <a class="st-card${s.ok ? '' : ' down'}${s.pending ? ' pending' : ''}"
+       href="${s.href}" target="_blank" rel="noopener">
+      <div class="st-card-top">
+        <span class="nm">${s.name}</span>
+        <span class="up">—</span>
+      </div>
+      ${ecg('beat', s.pending ? 'idle' : s.ok ? 'up' : 'down', !s.has || !s.ok)}
+      <div class="st-card-foot">
+        <span class="state">${s.state}</span>
+        <span>Service</span>
+      </div>
+    </a>`;
+
+  statusBody.innerHTML = `
+    <div class="st-hero bad">
+      <div class="gauge">
+        <svg viewBox="0 0 132 132">
+          <circle class="trk" cx="66" cy="66" r="62" />
+          <circle class="arc" cx="66" cy="66" r="62"
+                  stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}" />
+        </svg>
+        <div style="text-align:center">
+          <div class="v">—</div>
+          <div class="l">no data</div>
+        </div>
+      </div>
+      <div>
+        <h3 class="st-headline">Full outage — the monitor is not answering.</h3>
+        <p class="st-sub">Per-service data comes from <b>uptime.gatadao.com</b>, which is
+          unreachable right now, so uptime figures cannot be read${
+            bstack && bstack.ok
+              ? '. The second feed still reports every service online'
+              : ''}. Checked <b>${now}</b>.</p>
+        <div class="st-feeds">
+          <button class="st-refresh" id="stRefresh">Retry</button>
+        </div>
+      </div>
+    </div>
+    <div class="zone services">
+      <div class="zone-head">
+        <span class="zone-plate"><i class="sq"></i> Services</span>
+        <span class="zone-count">3 monitored</span>
+        <span class="zone-note">monitor unreachable</span>
+      </div>
+      <div class="st-grid">${services.map(card).join('')}</div>
+    </div>`;
+
+  statusLed.className = 'led bad';
+  swStatusNote.textContent = 'Full outage';
+
+  document.getElementById('stRefresh').addEventListener('click', e => {
+    e.target.disabled = true;
+    e.target.textContent = 'Retrying…';
+    loadStatus();
+  });
+}
+
+/* Distinct from an outage: the page is being served without the proxy, so
+   nothing was ever asked of the monitor. */
+function renderProxyNotice() {
+  statusBody.innerHTML = `
+    <div class="st-msg">
+      <b>Live status needs its proxy.</b><br>
+      This page is served without the <code>/api/uptime/</code> route, so the monitor was
+      never reached — the status hosts send no <code>Access-Control-Allow-Origin</code>
+      header, which rules out a direct read. Run the bundled <code>server.js</code>, or add
+      the proxy blocks documented there to nginx.
+      <br><br>
+      <a class="btn ghost sm" href="${KUMA_PAGE}" target="_blank" rel="noopener"
+         style="margin-top:6px">Kuma <span class="arw">→</span></a>
+      <a class="btn ghost sm" href="${BSTACK_PAGE}" target="_blank" rel="noopener"
+         style="margin-top:6px">Uptime <span class="arw">→</span></a>
+    </div>`;
+  statusLed.className = 'led';
+  swStatusNote.textContent = 'Live uptime';
+}
+
+/* BetterStack serves HTML, not JSON — its badge carries the overall state
+   as a colour class plus a sentence. Optional: a failure here must not
+   take the Uptime Kuma data down with it. */
+async function loadBetterStack() {
+  try {
+    const html = await fetch(`${BSTACK_BASE}/badge.json`).then(r => {
+      if (!r.ok) throw new Error('badge ' + r.status); return r.text();
+    });
+    const doc  = new DOMParser().parseFromString(html, 'text/html');
+    const text = (doc.body.textContent || '').trim().replace(/\s+/g, ' ');
+    if (!text) return null;
+    return {text, ok: /statuspage-green/.test(html)};
+  } catch (err) {
+    console.warn('[betterstack]', err.message);
+    return null;
+  }
+}
+
+/* Probe the Kuma status page itself, not its API, so the card reflects the
+   page users are sent to. Optional, like the BetterStack read. */
+async function loadKuma() {
+  try {
+    const r = await fetch(KUMA_PROBE, {method:'GET'});
+    return {ok: r.ok};
+  } catch (err) {
+    console.warn('[kuma]', err.message);
+    return {ok: false};
+  }
+}
+
+/* Never throws: reports the outcome so an outage can be told apart from a
+   missing proxy route. */
+async function readJSON(url) {
+  try {
+    const r = await fetch(url);
+    if (!r.ok) return {ok:false, status:r.status};
+    return {ok:true, data: await r.json()};
+  } catch (err) {
+    return {ok:false, status:0, err:err.message};
+  }
+}
+
+async function loadStatus() {
+  lastStatusAt = Date.now();
+  const [cfg, hb, bstack, kuma] = await Promise.all([
+    readJSON(`${UPTIME_BASE}/status-page/${UPTIME_SLUG}`),
+    readJSON(`${UPTIME_BASE}/status-page/heartbeat/${UPTIME_SLUG}`),
+    loadBetterStack(),
+    loadKuma()
+  ]);
+
+  if (cfg.ok && hb.ok) {
+    try {
+      renderStatus(cfg.data, hb.data, bstack, kuma);
+      statusLoaded = true;
+      return;
+    } catch (err) {
+      console.warn('[status]', err.message);
+    }
+  }
+
+  /* 404/405 means the request never left this origin — the proxy route is
+     absent. Anything else (502 from the proxy, a network failure, a 5xx from
+     the monitor) is the monitor being down. */
+  const noProxy = [cfg, hb].some(r => r.status === 404 || r.status === 405);
+  console.warn('[status]', noProxy ? 'proxy route missing' : 'monitor unreachable',
+               {cfg: cfg.status, hb: hb.status});
+
+  statusLoaded = false;
+  if (noProxy) renderProxyNotice(); else renderOutage(bstack, kuma);
+}
+
+/* ── polling ───────────────────────────────────────────────────────────
+   One read on first paint, so the Status card can show its LED and count.
+   After that we only poll while the panel is actually open and the tab is
+   in the foreground — an always-on timer meant every idle visitor hit the
+   monitors four times a minute forever. */
+let statusTimer = null;
+
+function statusPanelOpen() {
+  return document.getElementById('p-status').classList.contains('on');
+}
+
+function syncPolling() {
+  const want = statusPanelOpen() && document.visibilityState === 'visible';
+  if (want && !statusTimer) {
+    statusTimer = setInterval(loadStatus, 60000);
+  } else if (!want && statusTimer) {
+    clearInterval(statusTimer);
+    statusTimer = null;
+  }
+}
+
+loadStatus();
+document.addEventListener('visibilitychange', syncPolling);
+
+/* ── tabs ──────────────────────────────────────── */
+document.querySelectorAll('.sw').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.sw').forEach(x => {
+    const on = x === t;
+    x.classList.toggle('on', on);
+    x.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.id === 'p-' + t.dataset.p));
+
+  /* refresh on open if the figures have gone stale, then start/stop the timer */
+  if (t.dataset.p === 'status' && (!statusLoaded || Date.now() - lastStatusAt > 30000)) loadStatus();
+  syncPolling();
+}));
+
+/* ── copy ──────────────────────────────────────── */
+document.addEventListener('click', e => {
+  const b = e.target.closest('.ep-copy');
+  if (!b) return;
+  const v = b.dataset.v, old = b.textContent;
+  navigator.clipboard?.writeText(v).then(() => {
+    b.textContent = 'Copied  ✓';
+    b.classList.add('done');
+    setTimeout(() => { b.textContent = old; b.classList.remove('done'); }, 1400);
+  });
+});
+
+/* ── behaviour ─────────────────────────────────── */
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+const hd = document.getElementById('hd');
+addEventListener('scroll', () => hd.classList.toggle('stuck', scrollY > 20), {passive:true});
+
+const io = new IntersectionObserver(es => es.forEach(en => {
+  if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+}), {threshold:.12, rootMargin:'0px 0px -40px'});
+
+const rvAll = [...document.querySelectorAll('.rv')];
+rvAll.forEach((el, i) => {
+  el.style.transitionDelay = (Math.min(i, 6) * 70) + 'ms';
+  io.observe(el);
+});
+
+/* Safety net: never leave content invisible if the observer never fires
+   (hidden tab on load, prerender, exotic engines). */
+const revealNow = el => { el.classList.add('in'); io.unobserve(el); };
+requestAnimationFrame(() => rvAll.forEach(el => {
+  if (el.getBoundingClientRect().top < innerHeight) revealNow(el);
+}));
+setTimeout(() => rvAll.forEach(revealNow), 2500);
+
+/* Enter-the-App target: production reward app, or the local dev app on :3000 */
+const REWARD_APP = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+  ? 'http://localhost:3000'
+  : 'https://reward.gatahub.zone';
+document.querySelectorAll('a[href="https://reward.gatahub.zone"]')
+  .forEach(a => a.href = REWARD_APP);
+
+document.addEventListener('pointermove', e => {
+  const c = e.target.closest('.social');
+  if (!c) return;
+  const r = c.getBoundingClientRect();
+  c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+  c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+# Optional upgrade: push to main and the server updates itself, so you never
+# SSH in to deploy. Requires three repository secrets:
+#
+#   SSH_HOST         your server, e.g. gatahub.zone
+#   SSH_USER         a non-root user that owns /srv/gata-landing
+#   SSH_PRIVATE_KEY  a deploy key whose public half is in that user's
+#                    ~/.ssh/authorized_keys
+#
+# Until those exist this workflow simply fails, which is harmless — the
+# manual deploy.sh route keeps working.
+
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sanity check the payload
+        run: |
+          test -f index.html || { echo "index.html missing"; exit 1; }
+          test -d assets     || { echo "assets/ missing"; exit 1; }
+          echo "payload: $(du -sh index.html assets | tail -1 | cut -f1)"
+
+      - name: Load deploy key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      # Ship only what is public. The server never sees server.js, tools/ or
+      # node_modules, so there is nothing to exclude at the nginx layer.
+      - name: Publish
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/id_ed25519" \
+            assets/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/gata-landing/assets/"
+          rsync -az \
+            -e "ssh -i ~/.ssh/id_ed25519" \
+            index.html "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/gata-landing/index.html"
+
+      - name: Verify it is live
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' "https://${{ secrets.SSH_HOST }}/")
+          echo "site -> $code"
+          test "$code" = "200"
