@@ -8,6 +8,5 @@ Desktop.ini
 *.swp
 
 # per-machine editor / tooling config
-.claude/
 .vscode/
 .idea/
