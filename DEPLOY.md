@@ -20,22 +20,62 @@ and their *output* is committed to the repo. The server just serves files.
 
 ## First-time server setup
 
+### 0. Give the server read access
+
+The repo is **private**, so the server cannot clone anonymously. Create a
+read-only deploy key on the server — scoped to this one repo, so it cannot
+touch anything else in the account:
+
 ```bash
-# 1. clone somewhere that is NOT the web root
+ssh-keygen -t ed25519 -C "gata-landing deploy" -f ~/.ssh/gata_deploy -N ""
+cat ~/.ssh/gata_deploy.pub
+```
+
+Paste that public key at
+`https://github.com/JoveCosmos/gata-landing/settings/keys` → **Add deploy key**.
+Leave *Allow write access* **unchecked** — the server only ever reads.
+
+Then teach ssh to use it for this host:
+
+```bash
+cat >> ~/.ssh/config <<'EOF'
+Host github-gata
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/gata_deploy
+    IdentitiesOnly yes
+EOF
+chmod 600 ~/.ssh/config
+
+ssh -T git@github-gata   # expect: "Hi JoveCosmos/gata-landing! You've successfully authenticated"
+```
+
+### 1. Clone and install
+
+Clone somewhere that is **not** the web root:
+
+```bash
 sudo mkdir -p /srv && cd /srv
-sudo git clone git@github.com:<you>/gata-landing.git
+sudo git clone github-gata:JoveCosmos/gata-landing.git
 sudo chown -R $USER:$USER /srv/gata-landing
-
-# 2. create the docroot
 sudo mkdir -p /var/www/gata-landing
+```
 
-# 3. install the nginx site
+### 2. Install the nginx site
+
+Edit `deploy/nginx.conf` first — `server_name`, the certificate paths and the
+docroot must match this box.
+
+```bash
 sudo cp /srv/gata-landing/deploy/nginx.conf /etc/nginx/sites-available/gata-landing
 sudo ln -s /etc/nginx/sites-available/gata-landing /etc/nginx/sites-enabled/
 sudo mkdir -p /var/cache/nginx/gata_status
 sudo nginx -t && sudo systemctl reload nginx
+```
 
-# 4. first publish
+### 3. First publish
+
+```bash
 chmod +x /srv/gata-landing/deploy/deploy.sh
 /srv/gata-landing/deploy/deploy.sh
 ```
