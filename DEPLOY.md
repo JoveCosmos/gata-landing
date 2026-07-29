@@ -114,6 +114,17 @@ That is the whole loop. No build, no restart, no process manager.
 To skip the server-side step, have cron run the deploy script on a schedule.
 It needs no GitHub secrets — the read-only deploy key is already on the box.
 
+**Install the script outside the repo first.** If cron runs
+`/srv/gata-landing/deploy/deploy.sh` directly, then whoever can push to the
+repo can change the script cron executes as root — a repo compromise, or a
+stolen GitHub token, becomes root on this server within five minutes. Copying
+it out breaks that chain: a push can then only change what the site *serves*,
+never what the box *runs*.
+
+```bash
+sudo install -m 755 -o root -g root /srv/gata-landing/deploy/deploy.sh /usr/local/sbin/gata-deploy
+```
+
 ```bash
 sudo crontab -e
 ```
@@ -121,8 +132,11 @@ sudo crontab -e
 Add one line:
 
 ```
-*/5 * * * * /srv/gata-landing/deploy/deploy.sh >> /var/log/gata-deploy.log 2>&1
+*/5 * * * * /usr/local/sbin/gata-deploy >> /var/log/gata-deploy.log 2>&1
 ```
+
+Re-run the `install` command by hand whenever `deploy/deploy.sh` changes in the
+repo — that deliberate step is the point.
 
 Push from your machine and the site updates within five minutes. `deploy.sh`
 is safe to run repeatedly: with nothing new it prints "already up to date" and
