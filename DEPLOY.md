@@ -109,6 +109,88 @@ On the server:
 
 That is the whole loop. No build, no restart, no process manager.
 
+## Automatic deploys (cron)
+
+To skip the server-side step, have cron run the deploy script on a schedule.
+It needs no GitHub secrets — the read-only deploy key is already on the box.
+
+```bash
+sudo crontab -e
+```
+
+Add one line:
+
+```
+*/5 * * * * /srv/gata-landing/deploy/deploy.sh >> /var/log/gata-deploy.log 2>&1
+```
+
+Push from your machine and the site updates within five minutes. `deploy.sh`
+is safe to run repeatedly: with nothing new it prints "already up to date" and
+rsync copies nothing.
+
+```bash
+tail -20 /var/log/gata-deploy.log     # what it has been doing
+```
+
+### How cron works, coming from systemd
+
+cron is a daemon that reads a table of scheduled commands, the same job a
+systemd timer does — but as one line instead of a `.timer` plus a `.service`.
+
+| systemd | cron |
+|---|---|
+| `systemctl edit --full foo.timer` | `crontab -e` |
+| `systemctl daemon-reload` | *nothing* — cron re-reads on save |
+| `systemctl list-timers` | `crontab -l` |
+| `journalctl -u foo` | whatever you redirect to, e.g. `/var/log/gata-deploy.log` |
+| `OnCalendar=*:0/5` | `*/5 * * * *` |
+
+Each user has their own table. `sudo crontab -e` edits **root's**;
+`crontab -e` edits yours. They are different files, and a job listed in one is
+invisible to the other — a common source of "but I added it".
+
+The five fields before the command are
+`minute hour day-of-month month day-of-week`:
+
+```
+*/5 * * * *     every 5 minutes
+0 * * * *       top of every hour
+30 4 * * *      04:30 daily
+0 3 * * 1       03:00 every Monday
+```
+
+Never edit `/var/spool/cron/crontabs/*` by hand. `crontab -e` validates the
+syntax and notifies the daemon; editing the file directly skips both.
+
+### Two things that catch people
+
+**The environment is nearly empty.** cron does not read `.bashrc` or
+`.profile`, and `PATH` is usually just `/usr/bin:/bin`. A command that works in
+your shell can fail here. Use absolute paths — which is why the line above
+spells out `/srv/gata-landing/deploy/deploy.sh`.
+
+**`HOME` decides which ssh key is used.** Under `sudo crontab`, jobs run as
+root with `HOME=/root`, so git reads `/root/.ssh/config` for the `github-gata`
+alias. If the deploy key was created under a different user, either use that
+user's crontab or the pull will fail with `Permission denied (publickey)`.
+
+### Checking and changing it
+
+```bash
+sudo crontab -l                       # list root's jobs
+sudo crontab -e                       # edit; takes effect on save
+grep CRON /var/log/syslog | tail      # confirm it is firing
+```
+
+Avoid `crontab -r` — it deletes the whole table with no confirmation. To remove
+one job, `crontab -e` and delete the line.
+
+The log grows forever, so cap it:
+
+```bash
+printf '/var/log/gata-deploy.log {\n  weekly\n  rotate 4\n  compress\n  missingok\n  notifempty\n}\n' | sudo tee /etc/logrotate.d/gata-deploy
+```
+
 ## When you add or replace images
 
 Put the original (any size, JPG/PNG/GIF) in `assets/nft/`, then:
