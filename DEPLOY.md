@@ -13,7 +13,7 @@ and their *output* is committed to the repo. The server just serves files.
 |---|---|---|
 | `index.html` | ✅ | the whole site |
 | `assets/` | ✅ | images (WebP) and fonts (woff2) |
-| `deploy/` | ❌ | nginx config + this deploy script |
+| `deploy/` | ❌ | nginx config + the deploy script |
 | `tools/` | ❌ | local image/font scripts |
 | `server.js` | ❌ | local dev server (also provides the status proxies) |
 | `package.json`, `node_modules/` | ❌ | dev dependency for `tools/` |
