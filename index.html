@@ -711,28 +711,28 @@ document.getElementById('nftSouvenirCount').textContent = SOUVENIRS.length + ' d
 
 /* ── validators ────────────────────────────────── */
 const VAL_MAIN = [
-  {nm:'Akash',      sym:'AKT',   ic:'akt',      addr:'akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak',
+  {nm:'Akash',      sym:'AKT',   chain:'akashnet-2', ic:'akt',      addr:'akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak',
    stake:'https://wallet.keplr.app/chains/akash?modal=validator&chain=akashnet-2&validator_address=akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak'},
-  {nm:'AtomOne',    sym:'ATONE', ic:'atomone',  addr:'atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f',
+  {nm:'AtomOne',    sym:'ATONE', chain:'atomone-1', ic:'atomone',  addr:'atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f',
    stake:'https://explorer.allinbits.services/atomone/staking/atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f'},
-  {nm:'Cosmos Hub', sym:'ATOM',  ic:'cosmos',   addr:'cosmosvaloper10unx6s0cdqntvrumd5hs07rgd5ytcztqh8etw6',
+  {nm:'Cosmos Hub', sym:'ATOM',  chain:'cosmoshub-4', ic:'cosmos',   addr:'cosmosvaloper10unx6s0cdqntvrumd5hs07rgd5ytcztqh8etw6',
    stake:'https://wallet.keplr.app/chains/cosmos-hub'},
-  {nm:'Juno',       sym:'JUNO',  ic:'junologo', addr:'junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2',
+  {nm:'Juno',       sym:'JUNO',  chain:'juno-1', ic:'junologo', addr:'junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2',
    stake:'https://wallet.keplr.app/#/juno/stake?modal=stake&validator=junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2&all-list=true'},
-  {nm:'Nomic',      sym:'NOM',   ic:'nomic',    addr:'nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7',
+  {nm:'Nomic',      sym:'NOM',   chain:'nomic-stakenet-3', ic:'nomic',    addr:'nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7',
    stake:'https://app.nomic.io/#/staking?validator=nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7&modal=delegation'},
-  {nm:'Osmosis',    sym:'OSMO',  ic:'osmosis',  addr:'osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h',
+  {nm:'Osmosis',    sym:'OSMO',  chain:'osmosis-1', ic:'osmosis',  addr:'osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h',
    stake:'https://wallet.keplr.app/chains/osmosis?modal=validator&chain=osmosis-1&validator_address=osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h&referral=true'},
-  {nm:'Passage',    sym:'PASG',  ic:'passage',  addr:'pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv',
+  {nm:'Passage',    sym:'PASG',  chain:'passage-2', ic:'passage',  addr:'pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv',
    stake:'https://wallet.keplr.app/chains/passage?tab=staking&modal=staking&chain=passage-2&validator_address=pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv&step_id=3&action_id=stake'}
 ];
 
+/* Testnets carry the chain id only — no operator address, no explorer link.
+   Testnet tokens have no value, so a delegation path would be noise. */
 const VAL_TEST = [
-  {nm:'Cosmos Hub Testnet', sym:'PROVIDER', ic:'cosmos',  addr:'cosmosvaloper18rw0prhskw38kt99ypae4ka46k9js58u48un4z',
-   explorer:'https://testnet.ping.pub/cosmos/staking/cosmosvaloper18rw0prhskw38kt99ypae4ka46k9js58u48un4z'},
-  {nm:'AtomOne Testnet',    sym:'ATONE',    ic:'atomone', addr:'atonevaloper18rw0prhskw38kt99ypae4ka46k9js58uuwlg93',
-   explorer:'https://explorer.hazennetworksolutions.com/atomone-testnet/validator/?address=atonevaloper18rw0prhskw38kt99ypae4ka46k9js58uuwlg93'},
-  {nm:'Gno.land Topaz',     sym:'GNOT',     ic:'gnoland', addr:''}
+  {nm:'Cosmos Hub Testnet', chain:'provider',          ic:'cosmos'},
+  {nm:'AtomOne Testnet',    chain:'atomone-testnet-1', ic:'atomone'},
+  {nm:'Gno.land',           chain:'topaz-1',           ic:'gnoland'}
 ];
 
 /* Two traces: 'beat' for mainnet, 'wave' for testnet. */
@@ -756,18 +756,14 @@ const valCard = (v, testnet) => `
       <img src="assets/validators/${v.ic}.png" alt="" />
       <div>
         <div class="val-nm">${v.nm}</div>
-        <div class="val-sym">${v.sym}</div>
+        <div class="val-sym">${testnet ? v.chain : v.sym + ' · ' + v.chain}</div>
       </div>
       <span class="tag${testnet ? ' test' : ''}">${testnet ? 'Testnet' : 'Active'}</span>
     </div>
     ${testnet ? '' : '<div class="val-meta"><span>Commission</span><b>5.00%</b></div>'}
     ${ecg(testnet ? 'wave' : 'beat', testnet ? 'test' : 'up')}
-    ${v.addr
-      ? (v.explorer
-          ? `<a class="addr link" href="${v.explorer}" target="_blank" rel="noopener">${v.addr}</a>`
-          : `<div class="addr">${v.addr}</div>`)
-      : ''}
-    ${testnet ? '' : `<div class="val-acts">
+    ${testnet ? '' : `${v.addr ? `<div class="addr">${v.addr}</div>` : ''}
+    <div class="val-acts">
       ${v.stake ? `<a class="btn sm" href="${v.stake}" target="_blank" rel="noopener">Stake</a>`
                 : `<span class="disabled">Soon</span>`}
     </div>`}
@@ -793,7 +789,8 @@ const EP_MAIN = [
 
 const EP_TEST = [
   {nm:'AtomOne Testnet',    ic:'atomone', rpc:'https://atomone-testnet-rpc.gatadao.com', api:'https://atomone-testnet-api.gatadao.com'},
-  {nm:'Cosmos Hub Testnet', ic:'cosmos',  rpc:'https://provider-rpc.gatadao.com',        api:'https://provider-api.gatadao.com'}
+  {nm:'Cosmos Hub Testnet', ic:'cosmos',  rpc:'https://provider-rpc.gatadao.com',         api:'https://provider-api.gatadao.com'},
+  {nm:'Gno.land',           ic:'gnoland', rpc:'https://gnoland-testnet-rpc.gatadao.com',  api:'https://gnoland-testnet-api.gatadao.com'}
 ];
 
 const epRow = n => `
