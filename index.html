@@ -830,7 +830,7 @@ const BSTACK_BASE  = '/api/betterstack';
 const BSTACK_PAGE  = 'https://gatahub.gatadao.com/';
 
 /* Monitors still configured upstream for networks we no longer list. */
-const STATUS_HIDE = ['namada', 'stargaze'];
+const STATUS_HIDE = ['namada'];
 
 const statusBody    = document.getElementById('statusBody');
 const statusLed     = document.getElementById('statusLed');
@@ -844,7 +844,8 @@ const pct = (v, dp) => (v * 100).toFixed(dp === undefined ? (v >= 0.9995 ? 1 : 2
 function zoneOf(name) {
   const n = name.toLowerCase();
   if (/testnet|topaz|provider/.test(n)) return 'testnet';
-  if (/website|tenderduty|explorer|reward|docs/.test(n)) return 'services';
+  /* anything that is not a chain: apps, the site, tooling */
+  if (/website|tenderduty|explorer|reward|docs|app|uptime|kuma/.test(n)) return 'services';
   return 'mainnet';
 }
 
@@ -875,9 +876,10 @@ function renderStatus(cfg, hb, bstack, kuma) {
     return {name:m.name, up24, ok, has:!!last, zone:zoneOf(m.name)};
   });
 
-  /* Services we surface ourselves. 'Uptime' is the hosted status page, whose
-     own state comes from its badge; 'Kuma' is the self-hosted status page,
-     probed directly; the explorer is listed ahead of being monitored. */
+  /* The two status pages themselves, which cannot monitor their own
+     availability. Everything else in this panel comes from Kuma — including
+     the explorer, which now has its own monitor upstream, so we no longer
+     inject a placeholder for it. */
   enriched.push({
     name:'Uptime', up24:undefined, ok: bstack ? bstack.ok : true,
     has:!!bstack, zone:'services', href:BSTACK_PAGE
@@ -889,11 +891,6 @@ function renderStatus(cfg, hb, bstack, kuma) {
     has:!!kuma, zone:'services', href:KUMA_PAGE
   });
   if (kuma && !kuma.ok) down++;
-
-  enriched.push({
-    name:'Explorer', up24:undefined, ok:true, has:false, pending:true,
-    zone:'services', href:'https://explorer.gatahub.zone'
-  });
 
   const allGood = down === 0;
   const avg     = upCount ? upSum / upCount : 0;
