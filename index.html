@@ -43,11 +43,25 @@
 }
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{
+  scroll-behavior:smooth;
+  /* overflow-x on body alone is unreliable on mobile — html can still scroll
+     sideways. clip is preferred over hidden as it creates no scroll container;
+     hidden is the fallback for Safari < 16. */
+  overflow-x:hidden;
+  overflow-x:clip;
+  /* stop iOS Safari and Chrome Android inflating text during the reflow that
+     happens when the URL bar collapses on scroll — with a tight header that
+     inflation is what pushes content past the edge */
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
 body{
   margin:0; background:var(--ink); color:var(--txt);
   font-family:var(--sans); font-weight:300; font-size:16px; line-height:1.6;
-  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  overflow-x:clip;
 }
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
@@ -71,7 +85,13 @@ img{max-width:100%;display:block}
 header{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .4s,border-color .4s,backdrop-filter .4s;border-bottom:1px solid transparent}
 header.stuck{background:rgba(5,4,10,.72);backdrop-filter:blur(18px) saturate(150%);border-bottom-color:var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;gap:24px;height:76px}
-.brand{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:500;letter-spacing:.2em;text-transform:uppercase}
+/* The call to action must never be squashed below its label — it has
+   white-space:nowrap and overflow:hidden, so shrinking clips the text
+   silently. Let the wordmark give way instead. */
+.nav .btn{flex:0 0 auto}
+.brand{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  min-width:0;overflow:hidden;white-space:nowrap}
+.brand .mark{flex:0 0 auto}
 .brand .mark{width:34px;height:34px;border-radius:10px;object-fit:cover;border:1px solid var(--line-strong);
   box-shadow:0 0 22px -6px rgba(255,46,126,.55);transition:box-shadow .35s,border-color .35s}
 .brand:hover .mark{box-shadow:0 0 28px -4px rgba(255,46,126,.85);border-color:rgba(255,46,126,.5)}
@@ -386,7 +406,7 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
 footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-index:2}
 .foot{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
 .foot p{margin:0;font-size:12.5px;color:var(--faint)}
-.foot-links{display:flex;gap:12px}
+.foot-links{display:flex;gap:12px;flex-wrap:wrap}
 .foot-links a{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;border:1px solid var(--line);color:var(--muted);transition:.3s}
 .foot-links a:hover{color:#fff;border-color:rgba(255,46,126,.55);background:rgba(255,46,126,.1);transform:translateY(-2px)}
 .foot-links svg{width:15px;height:15px;fill:currentColor}
@@ -394,6 +414,22 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
 /* ── reveal ────────────────────────────────────── */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
 .rv.in{opacity:1;transform:none}
+
+/* Below this the header has no slack left: drop the filler word so the
+   button keeps its full label rather than clipping it. */
+@media (max-width:420px){
+  .nav .btn .opt{display:none}
+  .brand{letter-spacing:.12em;gap:9px}
+  .nav{gap:14px}
+}
+
+/* position:fixed + backdrop-filter is a known compositing bug on iOS Safari:
+   the layout box stays correct while the element paints at the wrong offset,
+   and the URL bar collapsing on scroll re-triggers it. A solid background
+   looks near-identical here and cannot drift. */
+@media (max-width:920px){
+  header.stuck{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(5,4,10,.95)}
+}
 
 @media (max-width:1080px){
   .switch{grid-template-columns:repeat(2,1fr);gap:11px}
@@ -438,7 +474,7 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
       <a href="#nfts">NFTs</a>
       <a href="#infrastructure">Infrastructure</a>
     </nav>
-    <a class="btn sm" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter the App <span class="arw">→</span></a>
+    <a class="btn sm" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter<span class="opt"> the</span> App <span class="arw">→</span></a>
   </div>
 </header>
 
