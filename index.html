@@ -213,7 +213,7 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
    reflows into an orphan card on a wide screen. */
 .socials{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
 .social{
-  position:relative;display:flex;align-items:center;gap:12px;padding:18px 16px;border:1px solid var(--line);border-radius:16px;
+  position:relative;display:flex;align-items:center;gap:11px;padding:18px 13px;border:1px solid var(--line);border-radius:16px;
   background:var(--panel);overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,background .35s;
 }
 .social::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .45s;
@@ -229,7 +229,7 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
 .social .tx{min-width:0;display:flex;flex-direction:column;gap:2px}
 .social .nm,.social .hd{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .social .nm{font-size:14px;font-weight:500;letter-spacing:.01em}
-.social .hd{font-size:11px;color:var(--faint);letter-spacing:.03em}
+.social .hd{font-size:11px;color:var(--faint);letter-spacing:0}
 .social .go{margin-left:auto;color:var(--faint);transition:transform .3s,color .3s;font-size:15px;flex:none}
 .social:hover .go{transform:translate(3px,-3px);color:var(--pink)}
 
@@ -687,7 +687,7 @@ const SOCIALS = [
   {ic:'telegram',nm:'Telegram', hd:'t.me/gatahub',       url:'https://t.me/gatahub'},
   {ic:'discord', nm:'Discord',  hd:'The GATA den',       url:'https://discord.gg/4MCrtaCetp'},
   {ic:'medium',  nm:'Medium',   hd:'@gatadao',           url:'https://medium.com/gatadao'},
-  {ic:'book',    nm:'Docs',     hd:'GitBook',            url:'https://docs.gatahub.zone/'}
+  {ic:'book',    nm:'Docs',     hd:'docs.gatahub.zone',  url:'https://docs.gatahub.zone/'}
 ];
 
 document.getElementById('socialGrid').innerHTML = SOCIALS.map(s => `
