@@ -229,46 +229,36 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
 .nft:hover .cap .go{transform:translate(3px,-3px);color:var(--pink)}
 
 /* ── networks ───────────────────────────────────────────────────────
-   One card per network. The logo sits in a lit disc, the name is set in
-   the serif, and the services we run are a single quiet line beneath a
-   hairline — listed only where they exist, so nothing on the card is
-   ever dimmed or crossed out. A small dot in the corner carries the live
-   state. The card itself is the control: tap it for the detail sheet. */
-.nets{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:16px}
-.net{position:relative;display:flex;flex-direction:column;align-items:center;
-  padding:34px 18px 26px;border:1px solid var(--line);border-radius:22px;
+   One card per network, kept bare: the logo as itself, the name, the
+   chain id. A small dot in the corner carries the live state. Every
+   detail lives in the sheet the card opens. */
+.nets{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.net{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:34px 16px 28px;border:1px solid var(--line);border-radius:22px;
   background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
   cursor:pointer;text-align:center;font-family:var(--sans);color:var(--txt);
   transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,box-shadow .45s}
 .net::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .45s;
-  background:radial-gradient(70% 45% at 50% 0%,rgba(255,46,126,.14),transparent 70%)}
+  background:radial-gradient(70% 50% at 50% 30%,rgba(255,46,126,.13),transparent 70%)}
 .net:hover,.net:focus-visible{transform:translateY(-6px);border-color:rgba(255,46,126,.38);
   box-shadow:0 30px 60px -30px rgba(255,46,126,.35);outline:none}
 .net:hover::before{opacity:1}
 .net:focus-visible{box-shadow:0 0 0 2px var(--violet)}
 
-.net .disc{position:relative;width:78px;height:78px;border-radius:50%;display:grid;place-items:center;margin-bottom:20px;
-  background:rgba(255,255,255,.04);border:1px solid var(--line-strong);
-  transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s}
-.net .disc::before{content:'';position:absolute;inset:-14px;border-radius:50%;pointer-events:none;
-  background:radial-gradient(circle,rgba(122,92,255,.28),transparent 68%);filter:blur(8px);opacity:.7;transition:opacity .45s}
-.net:hover .disc{transform:scale(1.05);border-color:rgba(255,46,126,.45)}
-.net:hover .disc::before{opacity:1}
-.net .disc img{position:relative;width:40px;height:40px;object-fit:contain}
+.net .logo{position:relative;width:60px;height:60px;object-fit:contain;margin-bottom:18px;
+  filter:drop-shadow(0 8px 20px rgba(0,0,0,.5));
+  transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.net:hover .logo{transform:scale(1.08)}
 
-.net .nm{font-family:var(--serif);font-size:22px;line-height:1.05;letter-spacing:-.005em}
+.net .nm{font-size:15.5px;font-weight:500;letter-spacing:.02em;line-height:1.25}
 .net .chain{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.08em;margin-top:6px}
-.net .svc{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);width:100%;
-  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);line-height:1.9}
-.net .svc i{font-style:normal;color:var(--faint);margin:0 5px}
 
 .net .health{position:absolute;top:16px;right:16px;width:7px;height:7px;border-radius:50%;background:var(--faint);opacity:.45}
 .net .health.up{background:var(--up);opacity:1;box-shadow:0 0 0 0 rgba(61,220,151,.6);animation:pulse 2.6s infinite}
 .net .health.down{background:var(--down);opacity:1;box-shadow:0 0 0 0 rgba(255,77,94,.6);animation:pulse 2.6s infinite}
 
-.zone.testnet .net .disc::before{background:radial-gradient(circle,rgba(122,92,255,.32),transparent 68%)}
+.zone.testnet .net::before{background:radial-gradient(70% 50% at 50% 30%,rgba(122,92,255,.16),transparent 70%)}
 .zone.testnet .net:hover{border-color:rgba(122,92,255,.42);box-shadow:0 30px 60px -30px rgba(122,92,255,.4)}
-.zone.testnet .net:hover .disc{border-color:rgba(122,92,255,.5)}
 
 /* shared bits the sheet reuses */
 .tag{flex:none;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:999px;
@@ -381,11 +371,9 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
   .modal.open .sheet{transform:none}
   .row{grid-template-columns:70px 1fr;gap:10px}
   .nets{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .net{padding:26px 12px 20px;border-radius:18px}
-  .net .disc{width:64px;height:64px;margin-bottom:16px}
-  .net .disc img{width:32px;height:32px}
-  .net .nm{font-size:19px}
-  .net .svc{font-size:9px;letter-spacing:.16em}
+  .net{padding:26px 12px 22px;border-radius:18px}
+  .net .logo{width:48px;height:48px;margin-bottom:14px}
+  .net .nm{font-size:14px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
@@ -680,15 +668,6 @@ const byChain = Object.fromEntries(NETWORKS.map(n => [n.chain, n]));
 /* Live monitor state, keyed by Kuma monitor name. Filled by loadStatus. */
 const LIVE = {};
 
-/* The services we run, listed on the card only where they exist. */
-const SERVICES = [
-  ['RPC',       n => !!n.rpc],
-  ['API',       n => !!n.api],
-  ['Snapshots', n => !!n.snap],
-  ['Validator', n => !!n.val],
-  ['Explorer',  n => !!n.scan]
-];
-
 function health(n) {
   if (!n.monitor) return '';
   const s = LIVE[n.monitor];
@@ -698,10 +677,9 @@ function health(n) {
 const netCard = n => `
   <button class="net" type="button" data-chain="${n.chain}" aria-haspopup="dialog">
     <span class="health ${health(n)}" aria-hidden="true"></span>
-    <span class="disc"><img src="assets/validators/${n.ic}.png" alt="" /></span>
+    <img class="logo" src="assets/validators/${n.ic}.png" alt="" />
     <div class="nm">${n.nm}</div>
     <div class="chain">${n.chain}</div>
-    <div class="svc">${SERVICES.filter(([, has]) => has(n)).map(([l]) => l).join('<i>·</i>')}</div>
   </button>`;
 
 function renderNets() {
@@ -747,10 +725,10 @@ function sheetHTML(n) {
   if (n.rpc)  rows.push(row('RPC', copy(n.rpc)));
   if (n.api)  rows.push(row('API', copy(n.api)));
   if (n.snap) rows.push(row('Snapshots', link(n.rpc + '/snapshots', 'Browse snapshots ↗')));
+  if (n.scan) rows.push(row('Explorer', link(`${EXPLORER}/${n.chain}`, 'Open in GATA SCAN ↗')));
   if (n.val)  rows.push(row('Validator',
       `<span class="st up"><i></i>Validating</span>` +
       (n.val.stake ? link(n.val.stake, 'Stake ↗') : '')));
-  if (n.scan) rows.push(row('Explorer', link(`${EXPLORER}/${n.chain}`, 'Open in GATA SCAN ↗')));
   rows.push(row('Uptime', uptimeCell(n)));
 
   return `
@@ -758,7 +736,7 @@ function sheetHTML(n) {
       <img src="assets/validators/${n.ic}.png" alt="" />
       <div>
         <div class="nm" id="sheetTitle">${n.nm}</div>
-        <div class="chain">${n.chain}${n.sym ? ' · ' + n.sym : ''}</div>
+        <div class="chain">${n.chain}</div>
       </div>
       <span class="tag${testnet ? ' test' : ''}">${testnet ? 'Testnet' : 'Mainnet'}</span>
     </div>

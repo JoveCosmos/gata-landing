@@ -54,7 +54,7 @@ Each network record carries per-service flags (`rpc`, `api`, `snap`, `scan`,
 `val`) and its Kuma `monitor` name. Two URLs are derived, not stored: snapshots
 live at `<rpc>/snapshots`, and GATA SCAN routes by chain id. The flags are not
 uniform on purpose — Nomic has no snapshots, and neither Nomic nor Gno.land is
-in the explorer — so the marks on each card are true rather than decorative.
+in the explorer — so each sheet lists only what that network actually has.
 
 `STATUS_HIDE` exists because the uptime monitor still tracks Namada, which the
 page no longer lists. Pausing that monitor upstream would be the tidier fix.
