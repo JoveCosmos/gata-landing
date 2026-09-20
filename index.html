@@ -91,10 +91,11 @@ header.stuck{background:rgba(5,4,10,.72);backdrop-filter:blur(18px) saturate(150
 .nav .btn{flex:0 0 auto}
 .brand{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
   min-width:0;overflow:hidden;white-space:nowrap}
-.brand .mark{flex:0 0 auto}
-.brand .mark{width:34px;height:34px;border-radius:10px;object-fit:cover;border:1px solid var(--line-strong);
-  box-shadow:0 0 22px -6px rgba(255,46,126,.55);transition:box-shadow .35s,border-color .35s}
-.brand:hover .mark{box-shadow:0 0 28px -4px rgba(255,46,126,.85);border-color:rgba(255,46,126,.5)}
+/* the mark is a bare white G on transparency — no frame, no border, just a
+   glow that follows the letterform rather than a box around it */
+.brand .mark{flex:0 0 auto;width:30px;height:30px;object-fit:contain;
+  filter:drop-shadow(0 0 8px rgba(255,46,126,.55));transition:filter .35s}
+.brand:hover .mark{filter:drop-shadow(0 0 12px rgba(255,46,126,.9))}
 .nav-links{display:flex;align-items:center;gap:34px}
 .nav-links a{font-size:12.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);transition:color .25s;position:relative}
 .nav-links a::after{content:'';position:absolute;left:0;bottom:-6px;height:1px;width:0;background:linear-gradient(90deg,var(--pink),var(--violet));transition:width .3s}
@@ -392,7 +393,7 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
 <header id="hd">
   <div class="wrap nav">
     <a class="brand" href="#top">
-      <img class="mark" src="assets/gata-logo.jpg" alt="GATA HUB" />
+      <img class="mark" src="assets/gata-logo.png" alt="GATA HUB" />
       GATA HUB
     </a>
     <nav class="nav-links">
