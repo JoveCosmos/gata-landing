@@ -188,26 +188,6 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
 .zone.honorary .nft{border-radius:14px}
 .zone.honorary .nft .cap .t{font-size:11px;letter-spacing:.03em}
 
-/* ── heartbeat traces ───────────────────────────────────────────────
-   Mainnet reads as a pulse: an organic ECG sweeping fast and smooth.
-   Testnet reads as a signal: a slower, stepped square wave. */
-.ecg{--ec:var(--up);--eg:rgba(61,220,151,.6);width:100%;height:22px;display:block;overflow:visible}
-.ecg .base{fill:none;stroke:var(--line-strong);stroke-width:1}
-.ecg .pulse{fill:none;stroke:var(--ec);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
-  filter:drop-shadow(0 0 4px var(--eg))}
-.ecg.t-test{--ec:var(--violet);--eg:rgba(122,92,255,.6)}
-.ecg.t-down{--ec:var(--down);--eg:rgba(255,77,94,.6)}
-.ecg.t-idle{--ec:var(--faint);--eg:rgba(109,102,128,.45)}
-
-.ecg.beat .pulse{stroke-dasharray:34 260;animation:ecg-beat 2.6s linear infinite}
-@keyframes ecg-beat{from{stroke-dashoffset:294}to{stroke-dashoffset:0}}
-
-.ecg.wave .pulse{stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;
-  stroke-dasharray:52 240;animation:ecg-wave 4.6s steps(26,end) infinite}
-@keyframes ecg-wave{from{stroke-dashoffset:292}to{stroke-dashoffset:0}}
-
-.ecg.flat .pulse{animation-duration:7s;opacity:.42}
-
 /* ── socials ───────────────────────────────────── */
 /* Five across, always. minmax(0,1fr) rather than auto-fit so the row never
    reflows into an orphan card on a wide screen. */
@@ -248,155 +228,100 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
 .nft .cap .go{color:var(--faint);font-size:15px;transition:transform .3s,color .3s;flex:none}
 .nft:hover .cap .go{transform:translate(3px,-3px);color:var(--pink)}
 
-/* ── section switch ─────────────────────────────────────────────────
-   These were pill chips and new visitors read them as decoration, so
-   each section now announces itself: icon, name, and what is inside.
-   The active card is lit and points down at its panel. */
-.switch{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:34px}
-.sw{position:relative;display:flex;align-items:center;gap:14px;padding:18px 18px;border-radius:16px;
-  border:1px solid var(--line-strong);background:rgba(255,255,255,.035);cursor:pointer;text-align:left;
-  font-family:var(--sans);color:var(--txt);
-  transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s,box-shadow .3s}
-.sw:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.07)}
-.sw:focus-visible{outline:2px solid var(--violet);outline-offset:3px}
-.sw-ic{flex:none;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
-  border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);transition:.35s}
-.sw-ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;
-  stroke-linecap:round;stroke-linejoin:round}
-.sw-tx{display:flex;flex-direction:column;gap:3px;min-width:0}
-.sw-tx b{font-size:14px;font-weight:500;letter-spacing:.02em}
-.sw-tx em{font-style:normal;font-size:11px;color:var(--faint);letter-spacing:.03em;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sw .led{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none;margin-left:auto;
-  transition:background .4s,box-shadow .4s}
-.sw .led.up{background:var(--up);box-shadow:0 0 9px 1px rgba(61,220,151,.8)}
-.sw .led.bad{background:var(--down);box-shadow:0 0 9px 1px rgba(255,77,94,.8)}
+/* ── networks ───────────────────────────────────────────────────────
+   One card per network, in the manner of the NFT tiles: the logo is the
+   subject, and a fixed row of service marks says what we run for it. The
+   card itself is the control — tap it for the detail sheet. */
+.nets{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px}
+.net{position:relative;display:flex;flex-direction:column;align-items:center;
+  padding:22px 14px 14px;border:1px solid var(--line);border-radius:18px;background:var(--panel);
+  cursor:pointer;text-align:center;font-family:var(--sans);color:var(--txt);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s,background .4s}
+.net:hover,.net:focus-visible{transform:translateY(-6px);border-color:rgba(255,46,126,.4);background:rgba(255,255,255,.05);outline:none}
+.net:focus-visible{box-shadow:0 0 0 2px var(--violet)}
+.net::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(60% 50% at 50% 0%,rgba(122,92,255,.16),transparent 70%)}
+.net:hover::before{opacity:1}
+.net .logo{width:64px;height:64px;border-radius:18px;padding:11px;object-fit:contain;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);margin-bottom:14px;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.net:hover .logo{transform:scale(1.06)}
+.net .nm{font-size:14.5px;font-weight:500;line-height:1.25}
+.net .chain{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em;margin-top:3px}
+.zone.testnet .net .logo{border-color:rgba(122,92,255,.28)}
 
-.sw.on{border-color:rgba(255,46,126,.55);
-  background:linear-gradient(155deg,rgba(255,46,126,.17),rgba(122,92,255,.15));
-  box-shadow:0 14px 44px -18px rgba(255,46,126,.85),inset 0 1px 0 rgba(255,255,255,.1)}
-.sw.on .sw-ic{border-color:transparent;color:#fff;
-  background:linear-gradient(140deg,var(--pink),var(--violet));
-  box-shadow:0 6px 18px -8px rgba(255,46,126,.9)}
-.sw.on .sw-tx em{color:var(--muted)}
-/* the notch that ties the lit card to the panel underneath */
-.sw.on::after{content:'';position:absolute;left:50%;bottom:-7px;width:12px;height:12px;
-  transform:translateX(-50%) rotate(45deg);border-radius:2px;
-  background:#1a0e1c;border-right:1px solid rgba(255,46,126,.55);border-bottom:1px solid rgba(255,46,126,.55)}
+/* Service marks. Same six, same order on every card, so a glance across
+   the grid reads like a table: what is lit, what is not. */
+.marks{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;margin-top:16px}
+.mark{display:flex;align-items:center;justify-content:center;gap:5px;padding:5px 4px;border-radius:8px;
+  border:1px solid var(--line);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
+  background:rgba(255,255,255,.02)}
+.mark i{width:11px;height:11px;border-radius:50%;display:grid;place-items:center;flex:none;
+  border:1px solid currentColor;font-style:normal;font-size:8px;line-height:1;font-weight:700}
+.mark.on,.mark.live-up{color:var(--txt);border-color:rgba(61,220,151,.3);background:rgba(61,220,151,.07)}
+.mark.on i,.mark.live-up i{background:var(--up);border-color:var(--up);color:#04321f}
+.mark.live-up i{box-shadow:0 0 8px rgba(61,220,151,.75)}
+.mark.live-down{color:var(--txt);border-color:rgba(255,77,94,.4);background:rgba(255,77,94,.08)}
+.mark.live-down i{background:var(--down);border-color:var(--down);color:#fff}
+.mark.off i{opacity:.35}
 
-.panel{display:none}
-.panel.on{display:block;animation:fade .45s ease both}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+/* ── live strip ─────────────────────────────────────────────────────
+   One line of monitor truth above the grid; per-network detail lives in
+   each card's Up mark and its sheet. */
+.live{display:flex;align-items:center;gap:13px;flex-wrap:wrap;padding:13px 18px;border:1px solid var(--line);border-radius:14px;
+  background:var(--panel);margin-bottom:24px;font-size:13.5px;color:var(--muted)}
+.live .led{width:9px;height:9px;border-radius:50%;background:var(--faint);flex:none;transition:background .4s}
+.live .led.up{background:var(--up);box-shadow:0 0 0 0 rgba(61,220,151,.55);animation:pulse 2.6s infinite}
+.live .led.bad{background:var(--down);box-shadow:0 0 0 0 rgba(255,77,94,.55);animation:pulse 2.6s infinite}
+.live b{color:var(--txt);font-weight:500}
+.live .g{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.live a{margin-left:auto;color:var(--muted);border-bottom:1px solid var(--line-strong);transition:.25s;font-size:12px;white-space:nowrap}
+.live a:hover{color:var(--pink);border-color:var(--pink)}
 
-/* ── validators ────────────────────────────────── */
-.vals{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
-.val{position:relative;padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--panel);
-  display:flex;flex-direction:column;gap:16px;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,background .35s}
-.val:hover{transform:translateY(-4px);border-color:var(--line-strong);background:rgba(255,255,255,.048)}
-.val-top{display:flex;align-items:center;gap:13px}
-.val-top img{width:38px;height:38px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.055);padding:5px;flex:none}
-.val-nm{font-size:15px;font-weight:500;line-height:1.25}
-.val-sym{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.1em}
-.tag{margin-left:auto;flex:none;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:999px;
+/* shared bits the sheet reuses */
+.tag{flex:none;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:999px;
   border:1px solid rgba(61,220,151,.3);color:var(--up);background:rgba(61,220,151,.08)}
 .tag.test{border-color:rgba(122,92,255,.35);color:#a893ff;background:rgba(122,92,255,.1)}
-.val-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
-.val-meta b{font-weight:500;color:var(--txt);font-family:var(--mono);font-size:12px}
 .addr{display:block;font-family:var(--mono);font-size:10.5px;color:var(--faint);word-break:break-all;line-height:1.5;
   border-left:1px solid var(--line-strong);padding-left:10px}
-.addr.link{transition:color .3s,border-color .3s}
-.addr.link:hover{color:var(--txt);border-left-color:var(--violet)}
-.val-acts{display:flex;margin-top:auto;padding-top:4px}
-.val-acts a{flex:1;text-align:center;justify-content:center}
-.val-acts .disabled{flex:1;text-align:center;padding:10px 12px;border-radius:999px;border:1px dashed var(--line);
-  font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)}
-
-/* ── endpoints ─────────────────────────────────── */
-.ep-list{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel)}
-.ep-row{display:grid;grid-template-columns:180px 1fr;gap:20px;padding:18px 24px;border-bottom:1px solid var(--line);transition:background .3s}
-.ep-row:last-child{border-bottom:none}
-.ep-row:hover{background:rgba(255,255,255,.03)}
-.ep-net{display:flex;align-items:center;gap:11px;font-size:14.5px;font-weight:500}
-.ep-net img{width:26px;height:26px;object-fit:contain;flex:none;opacity:.95}
-.ep-urls{display:flex;flex-direction:column;gap:7px;min-width:0}
-.ep-url{display:flex;align-items:center;gap:10px;min-width:0}
-.ep-kind{flex:none;width:34px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--pink);text-transform:uppercase;opacity:.9}
 .ep-copy{font-family:var(--mono);font-size:12px;color:var(--muted);background:rgba(255,255,255,.035);border:1px solid var(--line);
   border-radius:8px;padding:6px 11px;cursor:pointer;transition:.25s;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   text-align:left;max-width:100%}
 .ep-copy:hover{color:#fff;border-color:rgba(122,92,255,.5);background:rgba(122,92,255,.1)}
 .ep-copy.done{color:var(--up);border-color:rgba(61,220,151,.45);background:rgba(61,220,151,.09)}
-.panel-foot{margin-top:22px;font-size:12.5px;color:var(--faint);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.panel-foot a{color:var(--muted);border-bottom:1px solid var(--line-strong);transition:.25s}
-.panel-foot a:hover{color:var(--pink);border-color:var(--pink)}
 
-/* ── status ────────────────────────────────────────────────────────
-   Live figures from the monitors, arranged as our own instrument
-   panel: one headline gauge, the two feeds that produce it, then a
-   card per service with its own trace. */
-.st-hero{display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,4vw,48px);align-items:center;
-  border:1px solid var(--line);border-radius:20px;padding:clamp(26px,4vw,40px);margin-bottom:18px;
-  background:linear-gradient(150deg,rgba(61,220,151,.07),rgba(122,92,255,.06));position:relative;overflow:hidden}
-.st-hero.bad{background:linear-gradient(150deg,rgba(255,77,94,.1),rgba(122,92,255,.06))}
-.st-hero::before{content:'';position:absolute;width:340px;height:340px;border-radius:50%;left:-60px;top:-130px;
-  background:radial-gradient(circle,rgba(61,220,151,.22),transparent 66%);filter:blur(50px)}
-.st-hero.bad::before{background:radial-gradient(circle,rgba(255,77,94,.26),transparent 66%)}
-.st-hero > *{position:relative}
-
-.gauge{width:132px;height:132px;flex:none;position:relative;display:grid;place-items:center}
-.gauge svg{position:absolute;inset:0;transform:rotate(-90deg)}
-.gauge .trk{fill:none;stroke:rgba(255,255,255,.08);stroke-width:5}
-.gauge .arc{fill:none;stroke:var(--up);stroke-width:5;stroke-linecap:round;
-  transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1),stroke .6s;
-  filter:drop-shadow(0 0 8px rgba(61,220,151,.55))}
-.st-hero.bad .gauge .arc{stroke:var(--down);filter:drop-shadow(0 0 8px rgba(255,77,94,.55))}
-.gauge .v{font-family:var(--serif);font-size:32px;line-height:1;letter-spacing:-.01em}
-.gauge .l{font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);margin-top:5px}
-
-.st-headline{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3.2vw,34px);line-height:1.1;margin:0 0 8px}
-.st-sub{color:var(--muted);font-size:13.5px;margin:0 0 20px}
-.st-sub b{color:var(--txt);font-weight:500;font-family:var(--mono);font-size:13px}
-.st-feeds{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
-.st-refresh{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);
-  border:1px solid var(--line);border-radius:999px;padding:8px 16px;background:transparent;cursor:pointer;
-  font-family:var(--sans);transition:.3s}
-.st-refresh:hover{color:#fff;border-color:rgba(122,92,255,.5);background:rgba(122,92,255,.1)}
-.st-refresh[disabled]{opacity:.5;cursor:default}
-
-.st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
-.st-card{border:1px solid var(--line);border-radius:15px;padding:18px 19px 15px;background:var(--panel);
-  display:flex;flex-direction:column;gap:13px;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s}
-.st-card:hover{transform:translateY(-3px);border-color:var(--line-strong)}
-.st-card.down{border-color:rgba(255,77,94,.4);background:rgba(255,77,94,.05)}
-.st-card.pending{border-style:dashed}
-.st-card.pending .up,.st-card.pending .nm{color:var(--muted)}
-.st-card-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.st-card .nm{font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.st-card .up{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--up);flex:none}
-.st-card.down .up{color:var(--down)}
-.st-card .up small{font-size:9px;color:var(--faint);letter-spacing:.14em;margin-left:3px}
-.st-card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;
-  font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
-.st-card-foot .state{color:var(--up)}
-.st-card.down .st-card-foot .state{color:var(--down)}
-
-.st-msg{padding:26px 24px;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--muted);font-size:14px}
-.st-msg b{color:var(--txt);font-weight:500}
-.st-msg code{font-family:var(--mono);font-size:12px;color:var(--pink);background:rgba(255,46,126,.08);padding:2px 6px;border-radius:5px}
-.st-skel{height:104px;border:1px solid var(--line);border-radius:15px;position:relative;overflow:hidden;background:var(--panel)}
-.st-skel::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.045),transparent);
-  animation:sweep 1.4s infinite}
-@keyframes sweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
-
-/* ── explorer ──────────────────────────────────── */
-.explorer{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;
-  background:linear-gradient(150deg,rgba(122,92,255,.10),rgba(255,46,126,.07));
-  padding:clamp(34px,6vw,62px)}
-.explorer::before{content:'';position:absolute;width:420px;height:420px;border-radius:50%;right:-90px;top:-150px;
-  background:radial-gradient(circle,rgba(122,92,255,.35),transparent 65%);filter:blur(60px)}
-.explorer > *{position:relative}
-.explorer h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3.4vw,38px);margin:0 0 12px;line-height:1.12}
-.explorer p{color:var(--muted);margin:0 0 30px;font-size:15px;max-width:46ch}
+/* ── network sheet ──────────────────────────────────────────────────
+   No close control on purpose. On desktop the backdrop is the control;
+   on phones the sheet rises from the bottom and stops short of the top,
+   leaving a band of backdrop that a thumb can reach. Escape works too. */
+.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:rgba(5,4,10,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.modal.open{opacity:1;pointer-events:auto}
+.sheet{width:min(100%,520px);max-height:min(86vh,720px);overflow:auto;overscroll-behavior:contain;
+  border:1px solid var(--line-strong);border-radius:22px;padding:26px 26px 20px;
+  background:linear-gradient(170deg,#150c18,#0a0812);
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,46,126,.08);
+  transform:translateY(14px) scale(.98);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.modal.open .sheet{transform:none}
+.sheet-head{display:flex;align-items:center;gap:15px;margin-bottom:18px}
+.sheet-head img{width:52px;height:52px;border-radius:14px;padding:9px;object-fit:contain;background:rgba(255,255,255,.05);border:1px solid var(--line);flex:none}
+.sheet-head .nm{font-family:var(--serif);font-size:26px;line-height:1.05}
+.sheet-head .chain{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.06em;margin-top:4px}
+.sheet-head .tag{margin-left:auto}
+.row{display:grid;grid-template-columns:82px 1fr;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.row .k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--pink)}
+.row .v{min-width:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}
+.row .v .ep-copy{max-width:100%}
+.row .lnk{color:var(--txt);border-bottom:1px solid var(--line-strong);transition:.25s;font-size:13px}
+.row .lnk:hover{color:var(--pink);border-color:var(--pink)}
+.row .st{display:inline-flex;align-items:center;gap:7px;color:var(--muted)}
+.row .st i{width:8px;height:8px;border-radius:50%;background:var(--faint);flex:none}
+.row .st.up i{background:var(--up);box-shadow:0 0 8px rgba(61,220,151,.7)}
+.row .st.down i{background:var(--down);box-shadow:0 0 8px rgba(255,77,94,.7)}
+.row .st b{color:var(--txt);font-weight:500;font-family:var(--mono);font-size:12px}
+.row .addr{width:100%}
+.sheet-hint{margin-top:14px;font-size:10.5px;color:var(--faint);text-align:center;letter-spacing:.14em;text-transform:uppercase}
 
 /* ── cta band ──────────────────────────────────── */
 .band{position:relative;border:1px solid var(--line);border-radius:26px;padding:clamp(38px,6vw,72px);text-align:center;overflow:hidden;
@@ -443,14 +368,6 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
   header.stuck{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(5,4,10,.95)}
 }
 
-@media (max-width:1080px){
-  .switch{grid-template-columns:repeat(2,1fr);gap:11px}
-  .sw.on::after{display:none}
-}
-@media (max-width:430px){
-  .switch{grid-template-columns:1fr}
-  .sw{padding:15px 16px}
-}
 @media (max-width:920px){
   .hero-grid{grid-template-columns:1fr;text-align:center}
   .hero{padding-top:104px}
@@ -461,10 +378,21 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
   .kicker::after{display:none}
   .sec-head{margin-inline:auto}
   .nav-links{display:none}
-  .ep-row{grid-template-columns:1fr;gap:14px}
-  .st-hero{grid-template-columns:1fr;text-align:center;justify-items:center}
-  .st-feeds{justify-content:center}
   .zone{padding:22px 17px 20px}
+}
+/* On phones the sheet rises from the bottom and stops short of the top:
+   the uncovered band above it is the tap target to dismiss, since there
+   is no close button by design. */
+@media (max-width:640px){
+  .modal{align-items:flex-end;padding:0}
+  .sheet{width:100%;max-height:78vh;border-radius:22px 22px 0 0;padding:22px 20px 18px;
+    transform:translateY(100%)}
+  .modal.open .sheet{transform:none}
+  .row{grid-template-columns:70px 1fr;gap:10px}
+  .nets{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .net{padding:18px 10px 12px}
+  .net .logo{width:56px;height:56px}
+  .mark{font-size:8.5px;letter-spacing:.1em;padding:5px 3px;gap:4px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
@@ -559,89 +487,33 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
     <div class="wrap">
       <div class="sec-head rv">
         <div class="kicker">Infrastructure</div>
-        <h2>Validators, endpoints, explorer.</h2>
+        <h2>Validators, Nodes, endpoints, snapshots, explorer.</h2>
+      </div>
+
+      <div class="live rv" id="live">
+        <span class="led" id="liveLed"></span>
+        <span id="liveText">Checking live status…</span>
+        <span class="g" id="liveMeta"></span>
+        <a href="https://uptime.gatadao.com/status/validators" target="_blank" rel="noopener">Status page →</a>
       </div>
 
       <div class="rv">
-        <div class="switch" role="tablist" aria-label="Infrastructure sections">
-          <button class="sw on" id="swValidators" data-p="validators" role="tab" aria-controls="p-validators" aria-selected="true">
-            <span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 9-4.1-1.1-7-4.8-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
-            <span class="sw-tx"><b>Validators</b><em id="swValCount">Networks we secure</em></span>
-          </button>
-          <button class="sw" id="swEndpoints" data-p="endpoints" role="tab" aria-controls="p-endpoints" aria-selected="false">
-            <span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M9 7V3M15 7V3M7 7h10v5a5 5 0 0 1-10 0V7z"/><path d="M12 17v4"/></svg></span>
-            <span class="sw-tx"><b>Endpoints</b><em id="swEpCount">Public RPC &amp; API</em></span>
-          </button>
-          <button class="sw" id="swStatus" data-p="status" role="tab" aria-controls="p-status" aria-selected="false">
-            <span class="sw-ic"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 3 10 2.5-5H21"/></svg></span>
-            <span class="sw-tx"><b>Status</b><em id="swStatusNote">Live uptime</em></span>
-            <span class="led" id="statusLed"></span>
-          </button>
-          <button class="sw" id="swExplorer" data-p="explorer" role="tab" aria-controls="p-explorer" aria-selected="false">
-            <span class="sw-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.1 4.9-4.9 2.1 2.1-4.9 4.9-2.1z"/></svg></span>
-            <span class="sw-tx"><b>Explorer</b><em>Browse the chains</em></span>
-          </button>
+        <div class="zone">
+          <div class="zone-head">
+            <span class="zone-plate"><i class="sq"></i> Mainnet</span>
+            <span class="zone-count" id="netMainCount"></span>
+            <span class="zone-note">Tap a network for details</span>
+          </div>
+          <div class="nets" id="netMain"></div>
         </div>
-
-        <!-- validators -->
-        <div class="panel on" id="p-validators" role="tabpanel" aria-labelledby="swValidators" tabindex="0">
-          <div class="zone">
-            <div class="zone-head">
-              <span class="zone-plate"><i class="sq"></i> Mainnet</span>
-              <span class="zone-count" id="valMainCount"></span>
-              <span class="zone-note">5% commission</span>
-            </div>
-            <div class="vals" id="valMain"></div>
+        <div class="zone testnet">
+          <div class="zone-head">
+            <span class="zone-plate"><i class="sq"></i> Testnet</span>
+            <span class="zone-count" id="netTestCount"></span>
+            <span class="zone-note">Test networks</span>
           </div>
-          <div class="zone testnet">
-            <div class="zone-head">
-              <span class="zone-plate"><i class="sq"></i> Testnet</span>
-              <span class="zone-count" id="valTestCount"></span>
-              <span class="zone-note">Test networks</span>
-            </div>
-            <div class="vals" id="valTest"></div>
-          </div>
+          <div class="nets" id="netTest"></div>
         </div>
-
-        <!-- endpoints -->
-        <div class="panel" id="p-endpoints" role="tabpanel" aria-labelledby="swEndpoints" tabindex="0">
-          <div class="zone">
-            <div class="zone-head">
-              <span class="zone-plate"><i class="sq"></i> Mainnet</span>
-              <span class="zone-count" id="epMainCount"></span>
-              <span class="zone-note">Click to copy</span>
-            </div>
-            <div class="ep-list" id="epMain"></div>
-          </div>
-          <div class="zone testnet">
-            <div class="zone-head">
-              <span class="zone-plate"><i class="sq"></i> Testnet</span>
-              <span class="zone-count" id="epTestCount"></span>
-              <span class="zone-note">Click to copy</span>
-            </div>
-            <div class="ep-list" id="epTest"></div>
-          </div>
-        </div>
-
-        <!-- status -->
-        <div class="panel" id="p-status" role="tabpanel" aria-labelledby="swStatus" tabindex="0">
-          <div id="statusBody">
-            <div class="st-grid">
-              <div class="st-skel"></div><div class="st-skel"></div>
-              <div class="st-skel"></div><div class="st-skel"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- explorer -->
-        <div class="panel" id="p-explorer" role="tabpanel" aria-labelledby="swExplorer" tabindex="0">
-          <div class="explorer">
-            <h3>The GATA explorer.</h3>
-            <p>Block explorer for the networks GATA HUB validates.</p>
-            <a class="btn" href="https://explorer.gatahub.zone" target="_blank" rel="noopener">Open explorer <span class="arw">→</span></a>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -659,6 +531,12 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
   </section>
 
 </main>
+<!-- network detail sheet: opened by tapping a card, closed by tapping the
+     backdrop or pressing Escape — deliberately no close button -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1"></div>
+</div>
+
 
 <footer>
   <div class="wrap foot">
@@ -756,397 +634,224 @@ document.getElementById('nftSouvenir').innerHTML = SOUVENIRS.map(nftCard).join('
 document.getElementById('nftYieldCount').textContent = YIELD.length + ' collections';
 document.getElementById('nftSouvenirCount').textContent = SOUVENIRS.length + ' drops';
 
-/* ── validators ────────────────────────────────── */
-const VAL_MAIN = [
-  {nm:'Akash',      sym:'AKT',   chain:'akashnet-2', ic:'akt',      addr:'akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak',
-   stake:'https://wallet.keplr.app/chains/akash?modal=validator&chain=akashnet-2&validator_address=akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak'},
-  {nm:'AtomOne',    sym:'ATONE', chain:'atomone-1', ic:'atomone',  addr:'atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f',
-   stake:'https://explorer.allinbits.services/atomone/staking/atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f'},
-  {nm:'Cosmos Hub', sym:'ATOM',  chain:'cosmoshub-4', ic:'cosmos',   addr:'cosmosvaloper10unx6s0cdqntvrumd5hs07rgd5ytcztqh8etw6',
-   stake:'https://wallet.keplr.app/chains/cosmos-hub'},
-  {nm:'Juno',       sym:'JUNO',  chain:'juno-1', ic:'junologo', addr:'junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2',
-   stake:'https://wallet.keplr.app/#/juno/stake?modal=stake&validator=junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2&all-list=true'},
-  {nm:'Nomic',      sym:'NOM',   chain:'nomic-stakenet-3', ic:'nomic',    addr:'nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7',
-   stake:'https://app.nomic.io/#/staking?validator=nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7&modal=delegation'},
-  {nm:'Osmosis',    sym:'OSMO',  chain:'osmosis-1', ic:'osmosis',  addr:'osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h',
-   stake:'https://wallet.keplr.app/chains/osmosis?modal=validator&chain=osmosis-1&validator_address=osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h&referral=true'},
-  {nm:'Passage',    sym:'PASG',  chain:'passage-2', ic:'passage',  addr:'pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv',
-   stake:'https://wallet.keplr.app/chains/passage?tab=staking&modal=staking&chain=passage-2&validator_address=pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv&step_id=3&action_id=stake'}
+/* ── networks ──────────────────────────────────────────────────────────
+   One record per network. Two URLs are derived rather than stored:
+   every node publishes its archives at <rpc>/snapshots, and GATA SCAN
+   routes by chain id. The per-service flags are deliberately not uniform —
+   Nomic ships no snapshots, and neither Nomic nor Gno.land is in the
+   explorer — so the marks on each card are true, not decorative.
+
+   val: an object (mainnet: address + delegation link), true (testnet:
+   we validate, but tokens are valueless so no details), or absent.
+   monitor: the Uptime Kuma monitor name, or null if none exists yet. */
+const EXPLORER  = 'https://explorer.gatahub.zone';
+const KUMA_PAGE = 'https://uptime.gatadao.com/status/validators';
+
+const NETWORKS = [
+  /* mainnet */
+  {nm:'Akash',      chain:'akashnet-2',       sym:'AKT',   ic:'akt',      net:'main', monitor:'Akash',
+   rpc:'https://akash-rpc.gatadao.com',     api:'https://akash-api.gatadao.com',     snap:true, scan:true,
+   val:{addr:'akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak',
+        stake:'https://wallet.keplr.app/chains/akash?modal=validator&chain=akashnet-2&validator_address=akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak'}},
+  {nm:'AtomOne',    chain:'atomone-1',        sym:'ATONE', ic:'atomone',  net:'main', monitor:'AtomOne',
+   rpc:'https://atomone-rpc.gatadao.com',   api:'https://atomone-api.gatadao.com',   snap:true, scan:true,
+   val:{addr:'atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f',
+        stake:'https://explorer.allinbits.services/atomone/staking/atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f'}},
+  {nm:'Cosmos Hub', chain:'cosmoshub-4',      sym:'ATOM',  ic:'cosmos',   net:'main', monitor:'Cosmos Hub',
+   rpc:'https://cosmoshub-rpc.gatadao.com', api:'https://cosmoshub-api.gatadao.com', snap:true, scan:true,
+   val:{addr:'cosmosvaloper10unx6s0cdqntvrumd5hs07rgd5ytcztqh8etw6',
+        stake:'https://wallet.keplr.app/chains/cosmos-hub'}},
+  {nm:'Juno',       chain:'juno-1',           sym:'JUNO',  ic:'junologo', net:'main', monitor:'Juno',
+   rpc:'https://juno-rpc.gatadao.com',      api:'https://juno-api.gatadao.com',      snap:true, scan:true,
+   val:{addr:'junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2',
+        stake:'https://wallet.keplr.app/#/juno/stake?modal=stake&validator=junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2&all-list=true'}},
+  {nm:'Osmosis',    chain:'osmosis-1',        sym:'OSMO',  ic:'osmosis',  net:'main', monitor:'Osmosis',
+   rpc:'https://osmosis-rpc.gatadao.com',   api:'https://osmosis-api.gatadao.com',   snap:true, scan:true,
+   val:{addr:'osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h',
+        stake:'https://wallet.keplr.app/chains/osmosis?modal=validator&chain=osmosis-1&validator_address=osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h&referral=true'}},
+  {nm:'Passage',    chain:'passage-2',        sym:'PASG',  ic:'passage',  net:'main', monitor:'Passage',
+   rpc:'https://passage-rpc.gatadao.com',   api:'https://passage-api.gatadao.com',   snap:true, scan:true,
+   val:{addr:'pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv',
+        stake:'https://wallet.keplr.app/chains/passage?tab=staking&modal=staking&chain=passage-2&validator_address=pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv&step_id=3&action_id=stake'}},
+  {nm:'Nomic',      chain:'nomic-stakenet-3', sym:'NOM',   ic:'nomic',    net:'main', monitor:'Nomic',
+   rpc:'https://nomic-rpc.gatadao.com',                                              snap:false, scan:false,
+   val:{addr:'nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7',
+        stake:'https://app.nomic.io/#/staking?validator=nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7&modal=delegation'}},
+  {nm:'Gno.land',   chain:'gnoland-1',        sym:'GNOT',  ic:'gnoland',  net:'main', monitor:null,
+   rpc:'https://gnoland-rpc.gatadao.com',                                            snap:true, scan:false},
+
+  /* testnet */
+  {nm:'Cosmos Testnet',  chain:'provider',          ic:'cosmos',  net:'test', monitor:'Cosmos Testnet',
+   rpc:'https://provider-rpc.gatadao.com',        api:'https://provider-api.gatadao.com',        snap:true, scan:true, val:true},
+  {nm:'AtomOne Testnet', chain:'atomone-testnet-1', ic:'atomone', net:'test', monitor:'AtomOne Testnet',
+   rpc:'https://atomone-testnet-rpc.gatadao.com', api:'https://atomone-testnet-api.gatadao.com', snap:true, scan:true, val:true},
+  {nm:'Gno.land Testnet',chain:'topaz-1',           ic:'gnoland', net:'test', monitor:'Gno.land Testnet',
+   rpc:'https://gnoland-testnet-rpc.gatadao.com',                                                snap:true, scan:false, val:true}
 ];
 
-/* Testnets carry the chain id only — no operator address, no explorer link.
-   Testnet tokens have no value, so a delegation path would be noise. */
-const VAL_TEST = [
-  {nm:'Cosmos Testnet', chain:'provider',          ic:'cosmos'},
-  {nm:'AtomOne Testnet',    chain:'atomone-testnet-1', ic:'atomone'},
-  {nm:'Gno.land Testnet',           chain:'topaz-1',           ic:'gnoland'}
+const byChain = Object.fromEntries(NETWORKS.map(n => [n.chain, n]));
+
+/* Live monitor state, keyed by Kuma monitor name. Filled by loadStatus. */
+const LIVE = {};
+
+/* The six marks, in the order they appear on every card. */
+const MARKS = [
+  ['RPC',  n => !!n.rpc],
+  ['API',  n => !!n.api],
+  ['Snap', n => !!n.snap],
+  ['Val',  n => !!n.val],
+  ['Scan', n => !!n.scan],
+  ['Up',   null]                       /* live, resolved at render time */
 ];
 
-/* Two traces: 'beat' for mainnet, 'wave' for testnet. */
-const ECG_PATH = {
-  beat: 'M0 11 H34 l5 -7 l4 14 l5 -9 l4 4 H108 l5 -7 l4 14 l5 -9 l4 4 H182 l5 -7 l4 14 l5 -9 l4 4 H260',
-  wave: 'M0 15 H26 V7 H52 V15 H78 V7 H104 V15 H130 V7 H156 V15 H182 V7 H208 V15 H234 V7 H260'
-};
+function upMark(n) {
+  if (!n.monitor) return ['off', '·'];
+  const s = LIVE[n.monitor];
+  if (!s)        return ['off', '·'];
+  return s.ok ? ['live-up', '✓'] : ['live-down', '!'];
+}
 
-/* tone: 'up' | 'test' | 'down' | 'idle' — colour comes from a class, not an
-   inline value, so no runtime colour maths is needed. */
-const ecg = (kind, tone, flat) => `
-  <svg class="ecg ${kind}${tone && tone !== 'up' ? ' t-' + tone : ''}${flat ? ' flat' : ''}"
-       viewBox="0 0 260 22" preserveAspectRatio="none" aria-hidden="true">
-    <path class="base" d="M0 11 H260" />
-    <path class="pulse" d="${ECG_PATH[kind]}" />
-  </svg>`;
+const netCard = n => `
+  <button class="net" type="button" data-chain="${n.chain}" aria-haspopup="dialog">
+    <img class="logo" src="assets/validators/${n.ic}.png" alt="" />
+    <div class="nm">${n.nm}</div>
+    <div class="chain">${n.chain}</div>
+    <div class="marks">${MARKS.map(([label, has]) => {
+      const [cls, glyph] = has ? (has(n) ? ['on', '✓'] : ['off', '·']) : upMark(n);
+      return `<span class="mark ${cls}" data-m="${label}"><i>${glyph}</i>${label}</span>`;
+    }).join('')}</div>
+  </button>`;
 
-const valCard = (v, testnet) => `
-  <article class="val">
-    <div class="val-top">
-      <img src="assets/validators/${v.ic}.png" alt="" />
+function renderNets() {
+  const main = NETWORKS.filter(n => n.net === 'main');
+  const test = NETWORKS.filter(n => n.net === 'test');
+  document.getElementById('netMain').innerHTML = main.map(netCard).join('');
+  document.getElementById('netTest').innerHTML = test.map(netCard).join('');
+  document.getElementById('netMainCount').textContent = main.length + ' networks';
+  document.getElementById('netTestCount').textContent = test.length + ' networks';
+}
+renderNets();
+
+/* Only the Up marks depend on live data; repaint just those. */
+function refreshUpMarks() {
+  document.querySelectorAll('.net').forEach(card => {
+    const n = byChain[card.dataset.chain];
+    const [cls, glyph] = upMark(n);
+    const m = card.querySelector('.mark[data-m="Up"]');
+    m.className = 'mark ' + cls;
+    m.querySelector('i').textContent = glyph;
+  });
+}
+
+/* ── network sheet ─────────────────────────────────────────────────── */
+const modal = document.getElementById('modal');
+const sheet = document.getElementById('sheet');
+let openChain = null;
+let lastFocus = null;
+
+const pct = (v, dp) => (v * 100).toFixed(dp === undefined ? (v >= 0.9995 ? 1 : 2) : dp) + '%';
+
+const row  = (k, v) => `<div class="row"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+const copy = u => `<button class="ep-copy" data-v="${u}" title="Copy">${u}</button>`;
+const link = (u, t) => `<a class="lnk" href="${u}" target="_blank" rel="noopener">${t}</a>`;
+
+function uptimeCell(n) {
+  if (!n.monitor) return `<span class="st"><i></i>Not monitored yet</span>`;
+  const s = LIVE[n.monitor];
+  if (!s) return `<span class="st"><i></i>Checking…</span>`;
+  const up = s.up24 === undefined ? '' : ` · <b>${pct(s.up24)}</b> 24h`;
+  return `<span class="st ${s.ok ? 'up' : 'down'}"><i></i>${s.ok ? 'Up' : 'Down'}${up}</span>
+          ${link(KUMA_PAGE, 'History ↗')}`;
+}
+
+function sheetHTML(n) {
+  const testnet = n.net === 'test';
+  const rows = [];
+  if (n.rpc)  rows.push(row('RPC', copy(n.rpc)));
+  if (n.api)  rows.push(row('API', copy(n.api)));
+  if (n.snap) rows.push(row('Snapshots', link(n.rpc + '/snapshots', 'Browse snapshots ↗')));
+  if (n.val)  rows.push(row('Validator', n.val === true
+      ? `<span class="st up"><i></i>Validating</span>`
+      : `<span class="addr">${n.val.addr}</span>
+         <span class="st">5% commission</span>
+         ${n.val.stake ? `<a class="btn sm" href="${n.val.stake}" target="_blank" rel="noopener">Stake</a>` : ''}`));
+  if (n.scan) rows.push(row('Explorer', link(`${EXPLORER}/${n.chain}`, 'Open in GATA SCAN ↗')));
+  rows.push(row('Uptime', uptimeCell(n)));
+
+  return `
+    <div class="sheet-head">
+      <img src="assets/validators/${n.ic}.png" alt="" />
       <div>
-        <div class="val-nm">${v.nm}</div>
-        <div class="val-sym">${testnet ? v.chain : v.sym + ' · ' + v.chain}</div>
+        <div class="nm" id="sheetTitle">${n.nm}</div>
+        <div class="chain">${n.chain}${n.sym ? ' · ' + n.sym : ''}</div>
       </div>
-      <span class="tag${testnet ? ' test' : ''}">${testnet ? 'Testnet' : 'Active'}</span>
+      <span class="tag${testnet ? ' test' : ''}">${testnet ? 'Testnet' : 'Mainnet'}</span>
     </div>
-    ${testnet ? '' : '<div class="val-meta"><span>Commission</span><b>5.00%</b></div>'}
-    ${ecg(testnet ? 'wave' : 'beat', testnet ? 'test' : 'up')}
-    ${testnet ? '' : `${v.addr ? `<div class="addr">${v.addr}</div>` : ''}
-    <div class="val-acts">
-      ${v.stake ? `<a class="btn sm" href="${v.stake}" target="_blank" rel="noopener">Stake</a>`
-                : `<span class="disabled">Soon</span>`}
-    </div>`}
-  </article>`;
+    ${rows.join('')}
+    <div class="sheet-hint">Tap outside to close</div>`;
+}
 
-document.getElementById('valMain').innerHTML = VAL_MAIN.map(v => valCard(v, false)).join('');
-document.getElementById('valTest').innerHTML = VAL_TEST.map(v => valCard(v, true)).join('');
-document.getElementById('valMainCount').textContent = VAL_MAIN.length + ' networks';
-document.getElementById('valTestCount').textContent = VAL_TEST.length + ' networks';
-document.getElementById('swValCount').textContent =
-  VAL_MAIN.length + ' mainnet · ' + VAL_TEST.length + ' testnet';
+function openSheet(chain) {
+  const n = byChain[chain];
+  if (!n) return;
+  openChain = chain;
+  lastFocus = document.activeElement;
+  sheet.innerHTML = sheetHTML(n);
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  sheet.scrollTop = 0;
+  sheet.focus({preventScroll:true});
+}
 
-/* ── endpoints ─────────────────────────────────── */
-const EP_MAIN = [
-  {nm:'AtomOne',    ic:'atomone',  rpc:'https://atomone-rpc.gatadao.com',   api:'https://atomone-api.gatadao.com'},
-  {nm:'Akash',      ic:'akt',      rpc:'https://akash-rpc.gatadao.com',     api:'https://akash-api.gatadao.com'},
-  {nm:'Cosmos Hub', ic:'cosmos',   rpc:'https://cosmoshub-rpc.gatadao.com', api:'https://cosmoshub-api.gatadao.com'},
-  {nm:'Juno',       ic:'junologo', rpc:'https://juno-rpc.gatadao.com',      api:'https://juno-api.gatadao.com'},
-  {nm:'Osmosis',    ic:'osmosis',  rpc:'https://osmosis-rpc.gatadao.com',   api:'https://osmosis-api.gatadao.com'},
-  {nm:'Passage',    ic:'passage',  rpc:'https://passage-rpc.gatadao.com',   api:'https://passage-api.gatadao.com'},
-  {nm:'Nomic BTC',  ic:'nomic',    rpc:'https://nomic-rpc.gatadao.com'}
-];
+function closeSheet() {
+  if (!openChain) return;
+  openChain = null;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true});
+}
 
-const EP_TEST = [
-  {nm:'AtomOne Testnet',    ic:'atomone', rpc:'https://atomone-testnet-rpc.gatadao.com', api:'https://atomone-testnet-api.gatadao.com'},
-  {nm:'Cosmos Testnet', ic:'cosmos',  rpc:'https://provider-rpc.gatadao.com',         api:'https://provider-api.gatadao.com'},
-  {nm:'Gno.land Testnet',           ic:'gnoland', rpc:'https://gnoland-testnet-rpc.gatadao.com'}
-];
-
-const epRow = n => `
-  <div class="ep-row">
-    <div class="ep-net"><img src="assets/validators/${n.ic}.png" alt="" />${n.nm}</div>
-    <div class="ep-urls">
-      ${['rpc','api'].filter(k => n[k]).map(k => `
-        <div class="ep-url">
-          <span class="ep-kind">${k}</span>
-          <button class="ep-copy" data-v="${n[k]}" title="Copy">${n[k]}</button>
-        </div>`).join('')}
-    </div>
-  </div>`;
-
-document.getElementById('epMain').innerHTML = EP_MAIN.map(epRow).join('');
-document.getElementById('epTest').innerHTML = EP_TEST.map(epRow).join('');
-document.getElementById('epMainCount').textContent = EP_MAIN.length + ' networks';
-document.getElementById('epTestCount').textContent = EP_TEST.length + ' networks';
-document.getElementById('swEpCount').textContent =
-  (EP_MAIN.length + EP_TEST.length) + ' networks · RPC & API';
+document.addEventListener('click', e => {
+  const card = e.target.closest('.net');
+  if (card) { openSheet(card.dataset.chain); return; }
+  /* backdrop, not the sheet — the only pointer way out, by design */
+  if (e.target === modal) closeSheet();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
 
 /* ── live status ───────────────────────────────────────────────────────
-   Two monitoring feeds sit behind this panel:
-
-     Uptime Kuma  uptime.gatadao.com   per-service heartbeats + 24h uptime
-     BetterStack  gatahub.gatadao.com  hosted status page, overall state
-
-   Neither sends an Access-Control-Allow-Origin header, and Uptime Kuma
-   also blocks framing, so both are read through same-origin proxy paths.
-   See server.js for the dev proxy and the nginx snippets for production.
+   uptime.gatadao.com sends no Access-Control-Allow-Origin header, so its
+   API is read through a same-origin proxy path. See server.js for the dev
+   proxy and deploy/nginx.conf for production.
    ------------------------------------------------------------------- */
-const UPTIME_BASE  = '/api/uptime';
-const UPTIME_SLUG  = 'validators';
-const KUMA_PAGE    = 'https://uptime.gatadao.com/status/' + UPTIME_SLUG;
-const KUMA_PROBE   = '/api/kuma/status/' + UPTIME_SLUG;   /* the status page itself */
-const BSTACK_BASE  = '/api/betterstack';
-const BSTACK_PAGE  = 'https://gatahub.gatadao.com/';
+const UPTIME_BASE = '/api/uptime';
+const UPTIME_SLUG = 'validators';
 
 /* Monitors still configured upstream for networks we no longer list. */
 const STATUS_HIDE = ['namada'];
 
-const statusBody    = document.getElementById('statusBody');
-const statusLed     = document.getElementById('statusLed');
-const swStatusNote  = document.getElementById('swStatusNote');
-let statusLoaded = false;
+const liveLed  = document.getElementById('liveLed');
+const liveText = document.getElementById('liveText');
+const liveMeta = document.getElementById('liveMeta');
 let lastStatusAt = 0;
 
-const pct = (v, dp) => (v * 100).toFixed(dp === undefined ? (v >= 0.9995 ? 1 : 2) : dp) + '%';
-
-/* Split the monitors into the same zones the rest of the page uses. */
-function zoneOf(name) {
-  const n = name.toLowerCase();
-  if (/testnet|topaz|provider/.test(n)) return 'testnet';
-  /* anything that is not a chain: apps, the site, tooling */
-  if (/website|tenderduty|explorer|reward|docs|app|uptime|kuma/.test(n)) return 'services';
-  return 'mainnet';
-}
-
-const ZONES = [
-  {key:'mainnet',  cls:'',          label:'Mainnet'},
-  {key:'testnet',  cls:'testnet',   label:'Testnet'},
-  {key:'services', cls:'services',  label:'Services'}
-];
-
-function renderStatus(cfg, hb, bstack, kuma) {
-  const monitors = (cfg.publicGroupList || [])
-    .flatMap(g => g.monitorList || [])
-    .filter(m => !STATUS_HIDE.includes((m.name || '').trim().toLowerCase()));
-  if (!monitors.length) throw new Error('no monitors published');
-
-  let down = 0, newest = 0, upSum = 0, upCount = 0;
-
-  const enriched = monitors.map(m => {
-    const beats = (hb.heartbeatList && hb.heartbeatList[m.id]) || [];
-    const last  = beats[beats.length - 1];
-    const up24  = hb.uptimeList ? hb.uptimeList[m.id + '_24'] : undefined;
-    const ok    = !last || last.status === 1;
-
-    if (last && last.status === 0) down++;
-    if (last) newest = Math.max(newest, Date.parse(last.time.replace(' ', 'T') + 'Z') || 0);
-    if (up24 !== undefined) { upSum += up24; upCount++; }
-
-    return {name:m.name, up24, ok, has:!!last, zone:zoneOf(m.name)};
-  });
-
-  /* The two status pages themselves, which cannot monitor their own
-     availability. Everything else in this panel comes from Kuma — including
-     the explorer, which now has its own monitor upstream, so we no longer
-     inject a placeholder for it. */
-  enriched.push({
-    name:'Uptime', up24:undefined, ok: bstack ? bstack.ok : true,
-    has:!!bstack, zone:'services', href:BSTACK_PAGE
-  });
-  if (bstack && !bstack.ok) down++;
-
-  enriched.push({
-    name:'Kuma', up24:undefined, ok: kuma ? kuma.ok : true,
-    has:!!kuma, zone:'services', href:KUMA_PAGE
-  });
-  if (kuma && !kuma.ok) down++;
-
-  const allGood = down === 0;
-  const avg     = upCount ? upSum / upCount : 0;
-  const checked = newest
-    ? new Date(newest).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
-    : '—';
-
-  /* gauge arc: r=62 -> circumference ~389.6 */
-  const C = 2 * Math.PI * 62;
-  const arc = C * (1 - (upCount ? avg : 0));
-
-  const card = s => {
-    const tone = s.pending ? 'idle' : s.ok ? 'up' : 'down';
-    const kind = s.zone === 'testnet' ? 'wave' : 'beat';
-    const state = s.pending ? 'Not monitored yet' : !s.has ? 'No data' : s.ok ? '' : 'Down';
-
-    const inner = `
-      <div class="st-card-top">
-        <span class="nm">${s.name}</span>
-        <span class="up">${s.up24 === undefined ? '—' : pct(s.up24)}${s.up24 === undefined ? '' : '<small>24H</small>'}</span>
-      </div>
-      ${ecg(kind, tone, !s.has)}
-      <div class="st-card-foot">
-        <span class="state">${state}</span>
-        <span>${s.zone === 'services' ? 'Service' : s.zone}</span>
-      </div>`;
-
-    const cls = `st-card${s.ok ? '' : ' down'}${s.pending ? ' pending' : ''}`;
-    return s.href
-      ? `<a class="${cls}" href="${s.href}" target="_blank" rel="noopener">${inner}</a>`
-      : `<article class="${cls}">${inner}</article>`;
-  };
-
-  const zones = ZONES.map(z => {
-    const items = enriched.filter(s => s.zone === z.key);
-    if (!items.length) return '';
-    const bad = items.filter(s => !s.ok).length;
-    return `<div class="zone ${z.cls}">
-      <div class="zone-head">
-        <span class="zone-plate"><i class="sq"></i> ${z.label}</span>
-        <span class="zone-count">${items.length} monitored</span>
-        ${bad ? `<span class="zone-note">${bad} down</span>` : ''}
-      </div>
-      <div class="st-grid">${items.map(card).join('')}</div>
-    </div>`;
-  }).join('');
-
-  statusBody.innerHTML = `
-    <div class="st-hero${allGood ? '' : ' bad'}">
-      <div class="gauge">
-        <svg viewBox="0 0 132 132">
-          <circle class="trk" cx="66" cy="66" r="62" />
-          <circle class="arc" cx="66" cy="66" r="62"
-                  stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${arc.toFixed(1)}" />
-        </svg>
-        <div style="text-align:center">
-          <div class="v">${upCount ? pct(avg, avg >= 0.9995 ? 1 : 2) : '—'}</div>
-          <div class="l">24h uptime</div>
-        </div>
-      </div>
-      <div>
-        <h3 class="st-headline">${allGood
-          ? 'Every service is answering.'
-          : down + ' service' + (down > 1 ? 's are' : ' is') + ' not answering.'}</h3>
-        <p class="st-sub"><b>${enriched.length}</b> monitors across mainnets, testnets and
-          services · last check <b>${checked}</b></p>
-        <div class="st-feeds">
-          <button class="st-refresh" id="stRefresh">Refresh</button>
-        </div>
-      </div>
-    </div>
-    ${zones}`;
-
-  statusLed.className = 'led ' + (allGood ? 'up' : 'bad');
-  swStatusNote.textContent = allGood
-    ? enriched.length + ' services · all up'
-    : down + ' of ' + enriched.length + ' down';
-
-  document.getElementById('stRefresh').addEventListener('click', e => {
-    e.target.disabled = true;
-    e.target.textContent = 'Refreshing…';
-    loadStatus();
-  });
-}
-
-/* The monitor feed itself is down. Say so plainly, in the same instrument
-   panel, and keep whatever the second feed still reports. */
-function renderOutage(bstack, kuma) {
-  const C = 2 * Math.PI * 62;
-  const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-
-  const services = [
-    {name:'Uptime', ok: bstack ? bstack.ok : false, has:!!bstack, href:BSTACK_PAGE,
-     state: bstack ? (bstack.ok ? '' : 'Down') : 'No data'},
-    {name:'Kuma',   ok:false, has:true, href:KUMA_PAGE, state:'Down'},
-    {name:'Explorer', ok:true, has:false, pending:true, href:'https://explorer.gatahub.zone',
-     state:'Not monitored yet'}
-  ];
-
-  const card = s => `
-    <a class="st-card${s.ok ? '' : ' down'}${s.pending ? ' pending' : ''}"
-       href="${s.href}" target="_blank" rel="noopener">
-      <div class="st-card-top">
-        <span class="nm">${s.name}</span>
-        <span class="up">—</span>
-      </div>
-      ${ecg('beat', s.pending ? 'idle' : s.ok ? 'up' : 'down', !s.has || !s.ok)}
-      <div class="st-card-foot">
-        <span class="state">${s.state}</span>
-        <span>Service</span>
-      </div>
-    </a>`;
-
-  statusBody.innerHTML = `
-    <div class="st-hero bad">
-      <div class="gauge">
-        <svg viewBox="0 0 132 132">
-          <circle class="trk" cx="66" cy="66" r="62" />
-          <circle class="arc" cx="66" cy="66" r="62"
-                  stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}" />
-        </svg>
-        <div style="text-align:center">
-          <div class="v">—</div>
-          <div class="l">no data</div>
-        </div>
-      </div>
-      <div>
-        <h3 class="st-headline">Full outage — the monitor is not answering.</h3>
-        <p class="st-sub">Per-service data comes from <b>uptime.gatadao.com</b>, which is
-          unreachable right now, so uptime figures cannot be read${
-            bstack && bstack.ok
-              ? '. The second feed still reports every service online'
-              : ''}. Checked <b>${now}</b>.</p>
-        <div class="st-feeds">
-          <button class="st-refresh" id="stRefresh">Retry</button>
-        </div>
-      </div>
-    </div>
-    <div class="zone services">
-      <div class="zone-head">
-        <span class="zone-plate"><i class="sq"></i> Services</span>
-        <span class="zone-count">3 monitored</span>
-        <span class="zone-note">monitor unreachable</span>
-      </div>
-      <div class="st-grid">${services.map(card).join('')}</div>
-    </div>`;
-
-  statusLed.className = 'led bad';
-  swStatusNote.textContent = 'Full outage';
-
-  document.getElementById('stRefresh').addEventListener('click', e => {
-    e.target.disabled = true;
-    e.target.textContent = 'Retrying…';
-    loadStatus();
-  });
-}
-
-/* Distinct from an outage: the page is being served without the proxy, so
-   nothing was ever asked of the monitor. */
-function renderProxyNotice() {
-  statusBody.innerHTML = `
-    <div class="st-msg">
-      <b>Live status needs its proxy.</b><br>
-      This page is served without the <code>/api/uptime/</code> route, so the monitor was
-      never reached — the status hosts send no <code>Access-Control-Allow-Origin</code>
-      header, which rules out a direct read. Run the bundled <code>server.js</code>, or add
-      the proxy blocks documented there to nginx.
-      <br><br>
-      <a class="btn ghost sm" href="${KUMA_PAGE}" target="_blank" rel="noopener"
-         style="margin-top:6px">Kuma <span class="arw">→</span></a>
-      <a class="btn ghost sm" href="${BSTACK_PAGE}" target="_blank" rel="noopener"
-         style="margin-top:6px">Uptime <span class="arw">→</span></a>
-    </div>`;
-  statusLed.className = 'led';
-  swStatusNote.textContent = 'Live uptime';
-}
-
-/* BetterStack serves HTML, not JSON — its badge carries the overall state
-   as a colour class plus a sentence. Optional: a failure here must not
-   take the Uptime Kuma data down with it. */
-async function loadBetterStack() {
-  try {
-    const html = await fetch(`${BSTACK_BASE}/badge.json`).then(r => {
-      if (!r.ok) throw new Error('badge ' + r.status); return r.text();
-    });
-    const doc  = new DOMParser().parseFromString(html, 'text/html');
-    const text = (doc.body.textContent || '').trim().replace(/\s+/g, ' ');
-    if (!text) return null;
-    return {text, ok: /statuspage-green/.test(html)};
-  } catch (err) {
-    console.warn('[betterstack]', err.message);
-    return null;
+function setLive(summary) {
+  if (!summary) {
+    liveLed.className = 'led';
+    liveText.innerHTML = 'Live status unavailable';
+    liveMeta.textContent = '';
+    return;
   }
+  const {total, down, avg, checked} = summary;
+  liveLed.className = 'led ' + (down ? 'bad' : 'up');
+  liveText.innerHTML = down
+    ? `<b>${down} of ${total}</b> services not answering`
+    : `<b>All ${total} services</b> answering`;
+  liveMeta.textContent = (avg === null ? '' : pct(avg, avg >= 0.9995 ? 1 : 2) + ' 24h · ') + 'checked ' + checked;
 }
 
-/* Probe the Kuma status page itself, not its API, so the card reflects the
-   page users are sent to. Optional, like the BetterStack read. */
-async function loadKuma() {
-  try {
-    const r = await fetch(KUMA_PROBE, {method:'GET'});
-    return {ok: r.ok};
-  } catch (err) {
-    console.warn('[kuma]', err.message);
-    return {ok: false};
-  }
-}
-
-/* Never throws: reports the outcome so an outage can be told apart from a
-   missing proxy route. */
 async function readJSON(url) {
   try {
     const r = await fetch(url);
@@ -1159,48 +864,52 @@ async function readJSON(url) {
 
 async function loadStatus() {
   lastStatusAt = Date.now();
-  const [cfg, hb, bstack, kuma] = await Promise.all([
+  const [cfg, hb] = await Promise.all([
     readJSON(`${UPTIME_BASE}/status-page/${UPTIME_SLUG}`),
-    readJSON(`${UPTIME_BASE}/status-page/heartbeat/${UPTIME_SLUG}`),
-    loadBetterStack(),
-    loadKuma()
+    readJSON(`${UPTIME_BASE}/status-page/heartbeat/${UPTIME_SLUG}`)
   ]);
-
-  if (cfg.ok && hb.ok) {
-    try {
-      renderStatus(cfg.data, hb.data, bstack, kuma);
-      statusLoaded = true;
-      return;
-    } catch (err) {
-      console.warn('[status]', err.message);
-    }
+  if (!(cfg.ok && hb.ok)) {
+    console.warn('[status] unavailable', {cfg: cfg.status, hb: hb.status});
+    setLive(null);
+    return;
   }
 
-  /* 404/405 means the request never left this origin — the proxy route is
-     absent. Anything else (502 from the proxy, a network failure, a 5xx from
-     the monitor) is the monitor being down. */
-  const noProxy = [cfg, hb].some(r => r.status === 404 || r.status === 405);
-  console.warn('[status]', noProxy ? 'proxy route missing' : 'monitor unreachable',
-               {cfg: cfg.status, hb: hb.status});
+  const monitors = (cfg.data.publicGroupList || [])
+    .flatMap(g => g.monitorList || [])
+    .filter(m => !STATUS_HIDE.includes((m.name || '').trim().toLowerCase()));
 
-  statusLoaded = false;
-  if (noProxy) renderProxyNotice(); else renderOutage(bstack, kuma);
+  let down = 0, newest = 0, sum = 0, cnt = 0;
+  monitors.forEach(m => {
+    const beats = (hb.data.heartbeatList && hb.data.heartbeatList[m.id]) || [];
+    const last  = beats[beats.length - 1];
+    const up24  = hb.data.uptimeList ? hb.data.uptimeList[m.id + '_24'] : undefined;
+    const ok    = !last || last.status === 1;
+    LIVE[m.name] = {ok, up24};
+    if (last && last.status === 0) down++;
+    if (last) newest = Math.max(newest, Date.parse(last.time.replace(' ', 'T') + 'Z') || 0);
+    if (up24 !== undefined) { sum += up24; cnt++; }
+  });
+
+  setLive({
+    total: monitors.length, down,
+    avg: cnt ? sum / cnt : null,
+    checked: newest ? new Date(newest).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '—'
+  });
+  refreshUpMarks();
+  if (openChain) sheet.innerHTML = sheetHTML(byChain[openChain]);
 }
 
 /* ── polling ───────────────────────────────────────────────────────────
-   One read on first paint, so the Status card can show its LED and count.
-   After that we only poll while the panel is actually open and the tab is
-   in the foreground — an always-on timer meant every idle visitor hit the
-   monitors four times a minute forever. */
+   One read on first paint. After that, only while the infrastructure
+   section is actually on screen and the tab is in the foreground — an
+   always-on timer would have every idle visitor polling forever. */
 let statusTimer = null;
-
-function statusPanelOpen() {
-  return document.getElementById('p-status').classList.contains('on');
-}
+let infraVisible = false;
 
 function syncPolling() {
-  const want = statusPanelOpen() && document.visibilityState === 'visible';
+  const want = infraVisible && document.visibilityState === 'visible';
   if (want && !statusTimer) {
+    if (Date.now() - lastStatusAt > 30000) loadStatus();
     statusTimer = setInterval(loadStatus, 60000);
   } else if (!want && statusTimer) {
     clearInterval(statusTimer);
@@ -1208,22 +917,13 @@ function syncPolling() {
   }
 }
 
-loadStatus();
-document.addEventListener('visibilitychange', syncPolling);
-
-/* ── tabs ──────────────────────────────────────── */
-document.querySelectorAll('.sw').forEach(t => t.addEventListener('click', () => {
-  document.querySelectorAll('.sw').forEach(x => {
-    const on = x === t;
-    x.classList.toggle('on', on);
-    x.setAttribute('aria-selected', on ? 'true' : 'false');
-  });
-  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.id === 'p-' + t.dataset.p));
-
-  /* refresh on open if the figures have gone stale, then start/stop the timer */
-  if (t.dataset.p === 'status' && (!statusLoaded || Date.now() - lastStatusAt > 30000)) loadStatus();
+new IntersectionObserver(es => {
+  infraVisible = es.some(e => e.isIntersecting);
   syncPolling();
-}));
+}, {threshold: 0.05}).observe(document.getElementById('infrastructure'));
+
+document.addEventListener('visibilitychange', syncPolling);
+loadStatus();
 
 /* ── copy ──────────────────────────────────────── */
 document.addEventListener('click', e => {

@@ -47,42 +47,38 @@ Everything on the page is driven by plain arrays near the bottom of
 | Social links | search `const SOCIALS` |
 | NFT collections (Yield Series) | search `const YIELD` |
 | NFT souvenirs / honorary | search `const SOUVENIRS` |
-| Mainnet validators | search `const VAL_MAIN` |
-| Testnet validators | search `const VAL_TEST` |
-| Mainnet endpoints | search `const EP_MAIN` |
-| Testnet endpoints | search `const EP_TEST` |
+| Networks — validators, endpoints, snapshots, explorer, uptime | search `const NETWORKS` |
 | Monitors to hide from Status | search `const STATUS_HIDE` |
 
-`STATUS_HIDE` exists because the uptime monitor still tracks networks the page
-no longer lists (currently Namada and Stargaze). Pausing those monitors
-upstream would be the tidier fix.
+Each network record carries per-service flags (`rpc`, `api`, `snap`, `scan`,
+`val`) and its Kuma `monitor` name. Two URLs are derived, not stored: snapshots
+live at `<rpc>/snapshots`, and GATA SCAN routes by chain id. The flags are not
+uniform on purpose — Nomic has no snapshots, and neither Nomic nor Gno.land is
+in the explorer — so the marks on each card are true rather than decorative.
 
-## The Status section
+`STATUS_HIDE` exists because the uptime monitor still tracks Namada, which the
+page no longer lists. Pausing that monitor upstream would be the tidier fix.
 
-It reads two monitors live:
+## Live status
 
-- **Uptime Kuma** — `uptime.gatadao.com`, per-service heartbeats and 24h uptime
-- **BetterStack** — `gatahub.gatadao.com`, surfaced as the *Uptime* service card
+Every network card carries an **Up** mark, and its detail sheet shows the
+current state and 24h uptime, read live from **Uptime Kuma** at
+`uptime.gatadao.com`. A one-line strip above the grid summarises the whole
+monitor.
 
-Neither host sends an `Access-Control-Allow-Origin` header, and Kuma also sets
-`X-Frame-Options: SAMEORIGIN`, so the browser can neither `fetch()` nor iframe
-them directly. Both are read through **same-origin proxy paths** instead:
+Kuma sends no `Access-Control-Allow-Origin` header and blocks framing, so the
+browser cannot read it directly. It is read through a **same-origin proxy path**:
 
 ```
-/api/uptime/*       ->  uptime.gatadao.com/api/*     (Kuma API)
-/api/kuma/*         ->  uptime.gatadao.com/*         (Kuma status page)
-/api/betterstack/*  ->  gatahub.gatadao.com/*        (BetterStack badge)
+/api/uptime/*  ->  uptime.gatadao.com/api/*
 ```
 
-`server.js` provides these in development; `deploy/nginx.conf` does in
-production. **Without them the Status section renders an explanatory notice
-instead of live data** — that is the single most common thing to get wrong when
-deploying.
+`server.js` provides this in development; `deploy/nginx.conf` does in
+production. **Without it the strip reads "Live status unavailable" and every Up
+mark stays neutral** — the rest of the page is unaffected.
 
-If the monitor is unreachable the panel shows a full-outage state rather than
-an error, and keeps retrying until it recovers. Polling only runs while the
-Status section is open and the tab is focused, so idle visitors do not hammer
-the monitors.
+Polling runs only while the infrastructure section is on screen and the tab is
+focused, so idle visitors do not hammer the monitor.
 
 ## Images
 
