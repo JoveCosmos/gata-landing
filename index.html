@@ -619,7 +619,8 @@ document.getElementById('nftSouvenirCount').textContent = SOUVENIRS.length + ' d
 
    val: an object (mainnet: address + delegation link), true (testnet:
    we validate, but tokens are valueless so no details), or absent.
-   monitor: the Uptime Kuma monitor name, or null if none exists yet. */
+   monitor: the Uptime Kuma monitor name, or null if none exists yet.
+   hideChain: keep the id as the key but do not print it. */
 const EXPLORER  = 'https://explorer.gatahub.zone';
 const KUMA_PAGE = 'https://uptime.gatadao.com/status/validators';
 
@@ -661,7 +662,7 @@ const NETWORKS = [
    rpc:'https://provider-rpc.gatadao.com',        api:'https://provider-api.gatadao.com',        snap:true, scan:true, val:true},
   {nm:'AtomOne Testnet', chain:'atomone-testnet-1', ic:'atomone', net:'test', monitor:'AtomOne Testnet',
    rpc:'https://atomone-testnet-rpc.gatadao.com', api:'https://atomone-testnet-api.gatadao.com', snap:true, scan:true, val:true},
-  {nm:'Gno.land Testnet',chain:'pearl-1',           ic:'gnoland', net:'test', monitor:'Gno.land Testnet',
+  {nm:'Gno.land Testnet',chain:'pearl-1',           ic:'gnoland', net:'test', monitor:'Gno.land Testnet', hideChain:true,
    rpc:'https://gnoland-testnet-rpc.gatadao.com',                                                snap:true, scan:false, val:true}
 ];
 
@@ -681,7 +682,7 @@ const netCard = n => `
     <span class="health ${health(n)}" aria-hidden="true"></span>
     <img class="logo" src="assets/validators/${n.ic}.png" alt="" />
     <div class="nm">${n.nm}</div>
-    <div class="chain">${n.chain}</div>
+    ${n.hideChain ? '' : `<div class="chain">${n.chain}</div>`}
     <span class="go" aria-hidden="true">↗</span>
   </button>`;
 
@@ -739,7 +740,7 @@ function sheetHTML(n) {
       <img src="assets/validators/${n.ic}.png" alt="" />
       <div>
         <div class="nm" id="sheetTitle">${n.nm}</div>
-        <div class="chain">${n.chain}</div>
+        ${n.hideChain ? '' : `<div class="chain">${n.chain}</div>`}
       </div>
       <span class="tag${testnet ? ' test' : ''}">${testnet ? 'Testnet' : 'Mainnet'}</span>
     </div>
