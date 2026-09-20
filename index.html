@@ -229,54 +229,46 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
 .nft:hover .cap .go{transform:translate(3px,-3px);color:var(--pink)}
 
 /* ── networks ───────────────────────────────────────────────────────
-   One card per network, in the manner of the NFT tiles: the logo is the
-   subject, and a fixed row of service marks says what we run for it. The
-   card itself is the control — tap it for the detail sheet. */
-.nets{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px}
+   One card per network. The logo sits in a lit disc, the name is set in
+   the serif, and the services we run are a single quiet line beneath a
+   hairline — listed only where they exist, so nothing on the card is
+   ever dimmed or crossed out. A small dot in the corner carries the live
+   state. The card itself is the control: tap it for the detail sheet. */
+.nets{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:16px}
 .net{position:relative;display:flex;flex-direction:column;align-items:center;
-  padding:22px 14px 14px;border:1px solid var(--line);border-radius:18px;background:var(--panel);
+  padding:34px 18px 26px;border:1px solid var(--line);border-radius:22px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
   cursor:pointer;text-align:center;font-family:var(--sans);color:var(--txt);
-  transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s,background .4s}
-.net:hover,.net:focus-visible{transform:translateY(-6px);border-color:rgba(255,46,126,.4);background:rgba(255,255,255,.05);outline:none}
-.net:focus-visible{box-shadow:0 0 0 2px var(--violet)}
-.net::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;
-  background:radial-gradient(60% 50% at 50% 0%,rgba(122,92,255,.16),transparent 70%)}
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,box-shadow .45s}
+.net::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .45s;
+  background:radial-gradient(70% 45% at 50% 0%,rgba(255,46,126,.14),transparent 70%)}
+.net:hover,.net:focus-visible{transform:translateY(-6px);border-color:rgba(255,46,126,.38);
+  box-shadow:0 30px 60px -30px rgba(255,46,126,.35);outline:none}
 .net:hover::before{opacity:1}
-.net .logo{width:64px;height:64px;border-radius:18px;padding:11px;object-fit:contain;
-  background:rgba(255,255,255,.05);border:1px solid var(--line);margin-bottom:14px;
-  transition:transform .4s cubic-bezier(.2,.8,.2,1)}
-.net:hover .logo{transform:scale(1.06)}
-.net .nm{font-size:14.5px;font-weight:500;line-height:1.25}
-.net .chain{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em;margin-top:3px}
-.zone.testnet .net .logo{border-color:rgba(122,92,255,.28)}
+.net:focus-visible{box-shadow:0 0 0 2px var(--violet)}
 
-/* Service marks. Same six, same order on every card, so a glance across
-   the grid reads like a table: what is lit, what is not. */
-.marks{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;margin-top:16px}
-.mark{display:flex;align-items:center;justify-content:center;gap:5px;padding:5px 4px;border-radius:8px;
-  border:1px solid var(--line);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
-  background:rgba(255,255,255,.02)}
-.mark i{width:11px;height:11px;border-radius:50%;display:grid;place-items:center;flex:none;
-  border:1px solid currentColor;font-style:normal;font-size:8px;line-height:1;font-weight:700}
-.mark.on,.mark.live-up{color:var(--txt);border-color:rgba(61,220,151,.3);background:rgba(61,220,151,.07)}
-.mark.on i,.mark.live-up i{background:var(--up);border-color:var(--up);color:#04321f}
-.mark.live-up i{box-shadow:0 0 8px rgba(61,220,151,.75)}
-.mark.live-down{color:var(--txt);border-color:rgba(255,77,94,.4);background:rgba(255,77,94,.08)}
-.mark.live-down i{background:var(--down);border-color:var(--down);color:#fff}
-.mark.off i{opacity:.35}
+.net .disc{position:relative;width:78px;height:78px;border-radius:50%;display:grid;place-items:center;margin-bottom:20px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line-strong);
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s}
+.net .disc::before{content:'';position:absolute;inset:-14px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(122,92,255,.28),transparent 68%);filter:blur(8px);opacity:.7;transition:opacity .45s}
+.net:hover .disc{transform:scale(1.05);border-color:rgba(255,46,126,.45)}
+.net:hover .disc::before{opacity:1}
+.net .disc img{position:relative;width:40px;height:40px;object-fit:contain}
 
-/* ── live strip ─────────────────────────────────────────────────────
-   One line of monitor truth above the grid; per-network detail lives in
-   each card's Up mark and its sheet. */
-.live{display:flex;align-items:center;gap:13px;flex-wrap:wrap;padding:13px 18px;border:1px solid var(--line);border-radius:14px;
-  background:var(--panel);margin-bottom:24px;font-size:13.5px;color:var(--muted)}
-.live .led{width:9px;height:9px;border-radius:50%;background:var(--faint);flex:none;transition:background .4s}
-.live .led.up{background:var(--up);box-shadow:0 0 0 0 rgba(61,220,151,.55);animation:pulse 2.6s infinite}
-.live .led.bad{background:var(--down);box-shadow:0 0 0 0 rgba(255,77,94,.55);animation:pulse 2.6s infinite}
-.live b{color:var(--txt);font-weight:500}
-.live .g{font-family:var(--mono);font-size:12px;color:var(--faint)}
-.live a{margin-left:auto;color:var(--muted);border-bottom:1px solid var(--line-strong);transition:.25s;font-size:12px;white-space:nowrap}
-.live a:hover{color:var(--pink);border-color:var(--pink)}
+.net .nm{font-family:var(--serif);font-size:22px;line-height:1.05;letter-spacing:-.005em}
+.net .chain{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.08em;margin-top:6px}
+.net .svc{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);width:100%;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);line-height:1.9}
+.net .svc i{font-style:normal;color:var(--faint);margin:0 5px}
+
+.net .health{position:absolute;top:16px;right:16px;width:7px;height:7px;border-radius:50%;background:var(--faint);opacity:.45}
+.net .health.up{background:var(--up);opacity:1;box-shadow:0 0 0 0 rgba(61,220,151,.6);animation:pulse 2.6s infinite}
+.net .health.down{background:var(--down);opacity:1;box-shadow:0 0 0 0 rgba(255,77,94,.6);animation:pulse 2.6s infinite}
+
+.zone.testnet .net .disc::before{background:radial-gradient(circle,rgba(122,92,255,.32),transparent 68%)}
+.zone.testnet .net:hover{border-color:rgba(122,92,255,.42);box-shadow:0 30px 60px -30px rgba(122,92,255,.4)}
+.zone.testnet .net:hover .disc{border-color:rgba(122,92,255,.5)}
 
 /* shared bits the sheet reuses */
 .tag{flex:none;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:999px;
@@ -321,7 +313,6 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
 .row .st.down i{background:var(--down);box-shadow:0 0 8px rgba(255,77,94,.7)}
 .row .st b{color:var(--txt);font-weight:500;font-family:var(--mono);font-size:12px}
 .row .addr{width:100%}
-.sheet-hint{margin-top:14px;font-size:10.5px;color:var(--faint);text-align:center;letter-spacing:.14em;text-transform:uppercase}
 
 /* ── cta band ──────────────────────────────────── */
 .band{position:relative;border:1px solid var(--line);border-radius:26px;padding:clamp(38px,6vw,72px);text-align:center;overflow:hidden;
@@ -389,10 +380,12 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
     transform:translateY(100%)}
   .modal.open .sheet{transform:none}
   .row{grid-template-columns:70px 1fr;gap:10px}
-  .nets{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-  .net{padding:18px 10px 12px}
-  .net .logo{width:56px;height:56px}
-  .mark{font-size:8.5px;letter-spacing:.1em;padding:5px 3px;gap:4px}
+  .nets{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .net{padding:26px 12px 20px;border-radius:18px}
+  .net .disc{width:64px;height:64px;margin-bottom:16px}
+  .net .disc img{width:32px;height:32px}
+  .net .nm{font-size:19px}
+  .net .svc{font-size:9px;letter-spacing:.16em}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
@@ -488,13 +481,6 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
       <div class="sec-head rv">
         <div class="kicker">Infrastructure</div>
         <h2>Validators, Nodes, endpoints, snapshots, explorer.</h2>
-      </div>
-
-      <div class="live rv" id="live">
-        <span class="led" id="liveLed"></span>
-        <span id="liveText">Checking live status…</span>
-        <span class="g" id="liveMeta"></span>
-        <a href="https://uptime.gatadao.com/status/validators" target="_blank" rel="noopener">Status page →</a>
       </div>
 
       <div class="rv">
@@ -694,32 +680,28 @@ const byChain = Object.fromEntries(NETWORKS.map(n => [n.chain, n]));
 /* Live monitor state, keyed by Kuma monitor name. Filled by loadStatus. */
 const LIVE = {};
 
-/* The six marks, in the order they appear on every card. */
-const MARKS = [
-  ['RPC',  n => !!n.rpc],
-  ['API',  n => !!n.api],
-  ['Snap', n => !!n.snap],
-  ['Val',  n => !!n.val],
-  ['Scan', n => !!n.scan],
-  ['Up',   null]                       /* live, resolved at render time */
+/* The services we run, listed on the card only where they exist. */
+const SERVICES = [
+  ['RPC',       n => !!n.rpc],
+  ['API',       n => !!n.api],
+  ['Snapshots', n => !!n.snap],
+  ['Validator', n => !!n.val],
+  ['Explorer',  n => !!n.scan]
 ];
 
-function upMark(n) {
-  if (!n.monitor) return ['off', '·'];
+function health(n) {
+  if (!n.monitor) return '';
   const s = LIVE[n.monitor];
-  if (!s)        return ['off', '·'];
-  return s.ok ? ['live-up', '✓'] : ['live-down', '!'];
+  return !s ? '' : s.ok ? 'up' : 'down';
 }
 
 const netCard = n => `
   <button class="net" type="button" data-chain="${n.chain}" aria-haspopup="dialog">
-    <img class="logo" src="assets/validators/${n.ic}.png" alt="" />
+    <span class="health ${health(n)}" aria-hidden="true"></span>
+    <span class="disc"><img src="assets/validators/${n.ic}.png" alt="" /></span>
     <div class="nm">${n.nm}</div>
     <div class="chain">${n.chain}</div>
-    <div class="marks">${MARKS.map(([label, has]) => {
-      const [cls, glyph] = has ? (has(n) ? ['on', '✓'] : ['off', '·']) : upMark(n);
-      return `<span class="mark ${cls}" data-m="${label}"><i>${glyph}</i>${label}</span>`;
-    }).join('')}</div>
+    <div class="svc">${SERVICES.filter(([, has]) => has(n)).map(([l]) => l).join('<i>·</i>')}</div>
   </button>`;
 
 function renderNets() {
@@ -732,14 +714,10 @@ function renderNets() {
 }
 renderNets();
 
-/* Only the Up marks depend on live data; repaint just those. */
-function refreshUpMarks() {
+/* Only the corner dot depends on live data; repaint just that. */
+function refreshHealth() {
   document.querySelectorAll('.net').forEach(card => {
-    const n = byChain[card.dataset.chain];
-    const [cls, glyph] = upMark(n);
-    const m = card.querySelector('.mark[data-m="Up"]');
-    m.className = 'mark ' + cls;
-    m.querySelector('i').textContent = glyph;
+    card.querySelector('.health').className = 'health ' + health(byChain[card.dataset.chain]);
   });
 }
 
@@ -760,8 +738,7 @@ function uptimeCell(n) {
   const s = LIVE[n.monitor];
   if (!s) return `<span class="st"><i></i>Checking…</span>`;
   const up = s.up24 === undefined ? '' : ` · <b>${pct(s.up24)}</b> 24h`;
-  return `<span class="st ${s.ok ? 'up' : 'down'}"><i></i>${s.ok ? 'Up' : 'Down'}${up}</span>
-          ${link(KUMA_PAGE, 'History ↗')}`;
+  return `<span class="st ${s.ok ? 'up' : 'down'}"><i></i>${s.ok ? 'Up' : 'Down'}${up}</span>`;
 }
 
 function sheetHTML(n) {
@@ -770,11 +747,9 @@ function sheetHTML(n) {
   if (n.rpc)  rows.push(row('RPC', copy(n.rpc)));
   if (n.api)  rows.push(row('API', copy(n.api)));
   if (n.snap) rows.push(row('Snapshots', link(n.rpc + '/snapshots', 'Browse snapshots ↗')));
-  if (n.val)  rows.push(row('Validator', n.val === true
-      ? `<span class="st up"><i></i>Validating</span>`
-      : `<span class="addr">${n.val.addr}</span>
-         <span class="st">5% commission</span>
-         ${n.val.stake ? `<a class="btn sm" href="${n.val.stake}" target="_blank" rel="noopener">Stake</a>` : ''}`));
+  if (n.val)  rows.push(row('Validator',
+      `<span class="st up"><i></i>Validating</span>` +
+      (n.val.stake ? link(n.val.stake, 'Stake ↗') : '')));
   if (n.scan) rows.push(row('Explorer', link(`${EXPLORER}/${n.chain}`, 'Open in GATA SCAN ↗')));
   rows.push(row('Uptime', uptimeCell(n)));
 
@@ -787,8 +762,7 @@ function sheetHTML(n) {
       </div>
       <span class="tag${testnet ? ' test' : ''}">${testnet ? 'Testnet' : 'Mainnet'}</span>
     </div>
-    ${rows.join('')}
-    <div class="sheet-hint">Tap outside to close</div>`;
+    ${rows.join('')}`;
 }
 
 function openSheet(chain) {
@@ -824,7 +798,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet()
 /* ── live status ───────────────────────────────────────────────────────
    uptime.gatadao.com sends no Access-Control-Allow-Origin header, so its
    API is read through a same-origin proxy path. See server.js for the dev
-   proxy and deploy/nginx.conf for production.
+   proxy and deploy/nginx.conf for production. The result only drives the
+   corner dot on each card and the Uptime row in its sheet.
    ------------------------------------------------------------------- */
 const UPTIME_BASE = '/api/uptime';
 const UPTIME_SLUG = 'validators';
@@ -832,25 +807,7 @@ const UPTIME_SLUG = 'validators';
 /* Monitors still configured upstream for networks we no longer list. */
 const STATUS_HIDE = ['namada'];
 
-const liveLed  = document.getElementById('liveLed');
-const liveText = document.getElementById('liveText');
-const liveMeta = document.getElementById('liveMeta');
 let lastStatusAt = 0;
-
-function setLive(summary) {
-  if (!summary) {
-    liveLed.className = 'led';
-    liveText.innerHTML = 'Live status unavailable';
-    liveMeta.textContent = '';
-    return;
-  }
-  const {total, down, avg, checked} = summary;
-  liveLed.className = 'led ' + (down ? 'bad' : 'up');
-  liveText.innerHTML = down
-    ? `<b>${down} of ${total}</b> services not answering`
-    : `<b>All ${total} services</b> answering`;
-  liveMeta.textContent = (avg === null ? '' : pct(avg, avg >= 0.9995 ? 1 : 2) + ' 24h · ') + 'checked ' + checked;
-}
 
 async function readJSON(url) {
   try {
@@ -870,32 +827,22 @@ async function loadStatus() {
   ]);
   if (!(cfg.ok && hb.ok)) {
     console.warn('[status] unavailable', {cfg: cfg.status, hb: hb.status});
-    setLive(null);
     return;
   }
 
-  const monitors = (cfg.data.publicGroupList || [])
+  (cfg.data.publicGroupList || [])
     .flatMap(g => g.monitorList || [])
-    .filter(m => !STATUS_HIDE.includes((m.name || '').trim().toLowerCase()));
+    .filter(m => !STATUS_HIDE.includes((m.name || '').trim().toLowerCase()))
+    .forEach(m => {
+      const beats = (hb.data.heartbeatList && hb.data.heartbeatList[m.id]) || [];
+      const last  = beats[beats.length - 1];
+      LIVE[m.name] = {
+        ok:   !last || last.status === 1,
+        up24: hb.data.uptimeList ? hb.data.uptimeList[m.id + '_24'] : undefined
+      };
+    });
 
-  let down = 0, newest = 0, sum = 0, cnt = 0;
-  monitors.forEach(m => {
-    const beats = (hb.data.heartbeatList && hb.data.heartbeatList[m.id]) || [];
-    const last  = beats[beats.length - 1];
-    const up24  = hb.data.uptimeList ? hb.data.uptimeList[m.id + '_24'] : undefined;
-    const ok    = !last || last.status === 1;
-    LIVE[m.name] = {ok, up24};
-    if (last && last.status === 0) down++;
-    if (last) newest = Math.max(newest, Date.parse(last.time.replace(' ', 'T') + 'Z') || 0);
-    if (up24 !== undefined) { sum += up24; cnt++; }
-  });
-
-  setLive({
-    total: monitors.length, down,
-    avg: cnt ? sum / cnt : null,
-    checked: newest ? new Date(newest).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '—'
-  });
-  refreshUpMarks();
+  refreshHealth();
   if (openChain) sheet.innerHTML = sheetHTML(byChain[openChain]);
 }
 

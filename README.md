@@ -61,10 +61,9 @@ page no longer lists. Pausing that monitor upstream would be the tidier fix.
 
 ## Live status
 
-Every network card carries an **Up** mark, and its detail sheet shows the
-current state and 24h uptime, read live from **Uptime Kuma** at
-`uptime.gatadao.com`. A one-line strip above the grid summarises the whole
-monitor.
+Every network card carries a small dot in its corner — green, red, or neutral —
+and its detail sheet shows the current state and 24h uptime, both read live
+from **Uptime Kuma** at `uptime.gatadao.com`.
 
 Kuma sends no `Access-Control-Allow-Origin` header and blocks framing, so the
 browser cannot read it directly. It is read through a **same-origin proxy path**:
@@ -74,8 +73,8 @@ browser cannot read it directly. It is read through a **same-origin proxy path**
 ```
 
 `server.js` provides this in development; `deploy/nginx.conf` does in
-production. **Without it the strip reads "Live status unavailable" and every Up
-mark stays neutral** — the rest of the page is unaffected.
+production. **Without it every dot stays neutral and the Uptime row reads "Checking…"** —
+the rest of the page is unaffected.
 
 Polling runs only while the infrastructure section is on screen and the tab is
 focused, so idle visitors do not hammer the monitor.
