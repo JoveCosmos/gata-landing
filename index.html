@@ -253,6 +253,11 @@ h2{font-family:var(--serif);font-weight:400;font-size:clamp(31px,4.4vw,50px);lin
 .net .nm{font-size:15.5px;font-weight:500;letter-spacing:.02em;line-height:1.25}
 .net .chain{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.08em;margin-top:6px}
 
+/* the same corner arrow the NFT and social cards use to say "this opens" */
+.net .go{position:absolute;right:15px;bottom:13px;font-size:15px;color:var(--faint);opacity:.7;
+  transition:transform .3s,color .3s,opacity .3s}
+.net:hover .go,.net:focus-visible .go{transform:translate(3px,-3px);color:var(--pink);opacity:1}
+.zone.testnet .net:hover .go{color:#a893ff}
 .net .health{position:absolute;top:16px;right:16px;width:7px;height:7px;border-radius:50%;background:var(--faint);opacity:.45}
 .net .health.up{background:var(--up);opacity:1;box-shadow:0 0 0 0 rgba(61,220,151,.6);animation:pulse 2.6s infinite}
 .net .health.down{background:var(--down);opacity:1;box-shadow:0 0 0 0 rgba(255,77,94,.6);animation:pulse 2.6s infinite}
@@ -476,7 +481,6 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
           <div class="zone-head">
             <span class="zone-plate"><i class="sq"></i> Mainnet</span>
             <span class="zone-count" id="netMainCount"></span>
-            <span class="zone-note">Tap a network for details</span>
           </div>
           <div class="nets" id="netMain"></div>
         </div>
@@ -484,7 +488,6 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
           <div class="zone-head">
             <span class="zone-plate"><i class="sq"></i> Testnet</span>
             <span class="zone-count" id="netTestCount"></span>
-            <span class="zone-note">Test networks</span>
           </div>
           <div class="nets" id="netTest"></div>
         </div>
@@ -680,6 +683,7 @@ const netCard = n => `
     <img class="logo" src="assets/validators/${n.ic}.png" alt="" />
     <div class="nm">${n.nm}</div>
     <div class="chain">${n.chain}</div>
+    <span class="go" aria-hidden="true">↗</span>
   </button>`;
 
 function renderNets() {
