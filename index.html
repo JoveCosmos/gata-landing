@@ -559,12 +559,12 @@ document.getElementById('footLinks').innerHTML = SOCIALS
 /* Yield Series covers were pulled from the collection metadata (IPFS);
    souvenir covers come from gatahub.zone. All served locally. */
 const YIELD = [
-  {nm:'PengOnes',       img:'assets/nft/pengones.webp',      on:'Stargaze',
-   url:'https://stargaze.zone/m/cosmos1dvx9q8ck866qmpqpqdy3guqt96579x9ukn6qxx6mtf4x5gxfzfqschuxlw'},
   {nm:'Colonial Cats',  img:'assets/nft/colonial-cats.webp', on:'Stargaze',
    url:'https://stargaze.zone/m/cosmos1q2a8pl96nm3t4xnzpe5q96f3je7awssqh2js4er4wdv66e44kf4qd37k5w'},
   {nm:'Voyager Cats',   img:'assets/nft/voyager-cats.webp',  on:'Stargaze',
    url:'https://stargaze.zone/m/cosmos1rprz62z0vpa6ex0wcwmqkq6ls3cye9wea5lfshpg8fm2ztg28znsy4jzww'},
+  {nm:'PengOnes',       img:'assets/nft/pengones.webp',      on:'Stargaze',
+   url:'https://stargaze.zone/m/cosmos1dvx9q8ck866qmpqpqdy3guqt96579x9ukn6qxx6mtf4x5gxfzfqschuxlw'},
   {nm:'GATA Pixels',    img:'assets/nft/gata-pixels.webp',   on:'Stargaze',
    url:'https://stargaze.zone/m/cosmos1rusfnupu3wp0txmc8mw3jn88sx9f7vx4j9m3lcvh7dc3fkxvshpsprsx5h'},
   {nm:'Yield Walkers',  img:'assets/nft/yield-walkers.webp', on:'Stargaze',
@@ -614,8 +614,8 @@ document.getElementById('nftSouvenirCount').textContent = SOUVENIRS.length + ' d
    One record per network. Two URLs are derived rather than stored:
    every node publishes its archives at <rpc>/snapshots, and GATA SCAN
    routes by chain id. The per-service flags are deliberately not uniform —
-   Nomic ships no snapshots, and neither Nomic nor Gno.land is in the
-   explorer — so the marks on each card are true, not decorative.
+   Nomic ships no snapshots and is not in the explorer — so each sheet
+   lists only what that network actually has.
 
    val: an object (mainnet: address + delegation link), true (testnet:
    we validate, but tokens are valueless so no details), or absent.
@@ -655,7 +655,7 @@ const NETWORKS = [
    val:{addr:'nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7',
         stake:'https://app.nomic.io/#/staking?validator=nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7&modal=delegation'}},
   {nm:'Gno.land',   chain:'gnoland-1',        sym:'GNOT',  ic:'gnoland',  net:'main', monitor:'Gnoland',
-   rpc:'https://gnoland-rpc.gatadao.com',                                            snap:true, scan:false, val:true},
+   rpc:'https://gnoland-rpc.gatadao.com',                                            snap:true, scan:true,  val:true},
 
   /* testnet */
   {nm:'Cosmos Testnet',  chain:'provider',          ic:'cosmos',  net:'test', monitor:'Cosmos Testnet',
@@ -663,7 +663,7 @@ const NETWORKS = [
   {nm:'AtomOne Testnet', chain:'atomone-testnet-1', ic:'atomone', net:'test', monitor:'AtomOne Testnet',
    rpc:'https://atomone-testnet-rpc.gatadao.com', api:'https://atomone-testnet-api.gatadao.com', snap:true, scan:true, val:true},
   {nm:'Gno.land Testnet',chain:'pearl-1',           ic:'gnoland', net:'test', monitor:'Gno.land Testnet', hideChain:true,
-   rpc:'https://gnoland-testnet-rpc.gatadao.com',                                                snap:true, scan:false, val:true}
+   rpc:'https://gnoland-testnet-rpc.gatadao.com',                                                snap:true, scan:true,  val:true}
 ];
 
 const byChain = Object.fromEntries(NETWORKS.map(n => [n.chain, n]));
