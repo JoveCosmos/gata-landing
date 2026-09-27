@@ -120,6 +120,33 @@ header.stuck{background:rgba(5,4,10,.72);backdrop-filter:blur(18px) saturate(150
 .btn.ghost::before{display:none}
 .btn.ghost:hover{border-color:rgba(255,46,126,.55);color:#fff;background:rgba(255,46,126,.07);box-shadow:none;transform:translateY(-1px)}
 
+/* ── apps menu ──────────────────────────────────────────────────────
+   The header action is a menu, not the primary call to action, so it
+   takes the cool half of the palette and leaves pink to "Enter Reward
+   App" in the hero. */
+.apps{position:relative;flex:0 0 auto}
+.apps-btn{background:linear-gradient(100deg,var(--violet),#5ec8ff);
+  box-shadow:0 6px 30px -8px rgba(122,92,255,.65),inset 0 1px 0 rgba(255,255,255,.22)}
+.apps-btn::before{background:linear-gradient(100deg,#5ec8ff,var(--violet))}
+.apps-btn:hover{box-shadow:0 14px 44px -10px rgba(94,200,255,.7),inset 0 1px 0 rgba(255,255,255,.3)}
+.apps-btn .caret{display:inline-block;font-size:9px;transition:transform .3s}
+.apps.open .apps-btn .caret{transform:rotate(180deg)}
+
+.apps-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:236px;z-index:60;
+  border:1px solid var(--line-strong);border-radius:16px;padding:7px;
+  background:linear-gradient(170deg,#150c18,#0a0812);
+  box-shadow:0 30px 70px -25px rgba(0,0,0,.9),0 0 0 1px rgba(122,92,255,.1);
+  opacity:0;transform:translateY(-6px) scale(.98);transform-origin:top right;pointer-events:none;
+  transition:opacity .2s,transform .22s cubic-bezier(.2,.8,.2,1)}
+.apps.open .apps-menu{opacity:1;transform:none;pointer-events:auto}
+.apps-menu a{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:11px;
+  color:var(--txt);transition:background .25s,color .25s}
+.apps-menu a:hover{background:rgba(255,255,255,.06)}
+.apps-menu a .t{font-size:13.5px;font-weight:500;letter-spacing:.01em}
+.apps-menu a .d{display:block;font-size:10.5px;color:var(--faint);letter-spacing:.03em;margin-top:2px}
+.apps-menu a .go{margin-left:auto;color:var(--faint);font-size:14px;transition:transform .3s,color .3s}
+.apps-menu a:hover .go{transform:translate(3px,-3px);color:var(--violet)}
+
 /* ── hero ──────────────────────────────────────── */
 .hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:120px 0 80px;position:relative}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,70px);align-items:center;width:100%}
@@ -342,7 +369,6 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
 /* Below this the header has no slack left: drop the filler word so the
    button keeps its full label rather than clipping it. */
 @media (max-width:420px){
-  .nav .btn .opt{display:none}
   .brand{letter-spacing:.12em;gap:9px}
   .nav{gap:14px}
 }
@@ -401,7 +427,14 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
       <a href="#nfts">NFTs</a>
       <a href="#infrastructure">Infrastructure</a>
     </nav>
-    <a class="btn sm" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter<span class="opt"> the</span> App <span class="arw">→</span></a>
+    <div class="apps" id="apps">
+      <button class="btn sm apps-btn" id="appsBtn" type="button" aria-haspopup="true" aria-expanded="false">Our apps <span class="caret">▾</span></button>
+      <div class="apps-menu" id="appsMenu" role="menu">
+        <a role="menuitem" href="https://reward.gatahub.zone" target="_blank" rel="noopener"><span><span class="t">Reward app</span><span class="d">reward.gatahub.zone</span></span><span class="go">↗</span></a>
+        <a role="menuitem" href="https://explorer.gatahub.zone" target="_blank" rel="noopener"><span><span class="t">Explorer</span><span class="d">GATA SCAN</span></span><span class="go">↗</span></a>
+        <a role="menuitem" href="https://atomone.gatahub.zone" target="_blank" rel="noopener"><span><span class="t">AtomOne app</span><span class="d">Nakamoto Bonus</span></span><span class="go">↗</span></a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -414,7 +447,7 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
         <div class="eyebrow rv"><span class="dot"></span> Infrastructure and NFTfi since 2022</div>
         <h1 class="rv">Catnip for the <span class="grad">decentralized</span> world of tomorrow.</h1>
         <div class="hero-cta rv">
-          <a class="btn" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter the App <span class="arw">→</span></a>
+          <a class="btn" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter Reward App <span class="arw">→</span></a>
         </div>
       </div>
       <div class="cat-stage rv">
@@ -501,7 +534,7 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
         <img class="mini" src="assets/gataCat.webp" alt="" />
         <h2>Ready to claim your rewards?</h2>
         <p>NFT rewards, Staking perks, GATA loyalty and Raffles Live in the GATA reward app.</p>
-        <a class="btn" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter the App <span class="arw">→</span></a>
+        <a class="btn" href="https://reward.gatahub.zone" target="_blank" rel="noopener">Enter Reward App <span class="arw">→</span></a>
       </div>
     </div>
   </section>
@@ -865,6 +898,24 @@ document.addEventListener('click', e => {
     setTimeout(() => { b.textContent = old; b.classList.remove('done'); }, 1400);
   });
 });
+
+/* ── apps menu ─────────────────────────────────────────────────────── */
+const apps    = document.getElementById('apps');
+const appsBtn = document.getElementById('appsBtn');
+
+function closeApps() {
+  if (!apps.classList.contains('open')) return;
+  apps.classList.remove('open');
+  appsBtn.setAttribute('aria-expanded', 'false');
+}
+
+appsBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const open = apps.classList.toggle('open');
+  appsBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+document.addEventListener('click', e => { if (!apps.contains(e.target)) closeApps(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeApps(); });
 
 /* ── behaviour ─────────────────────────────────── */
 document.getElementById('yr').textContent = new Date().getFullYear();
