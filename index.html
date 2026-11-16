@@ -510,7 +510,7 @@ footer{padding:44px 0 54px;border-top:1px solid var(--line);position:relative;z-
     <div class="wrap">
       <div class="sec-head rv">
         <div class="kicker">Infrastructure</div>
-        <h2>Validators, Explorer, Nodes, Endpoints, Snapshots, Indexer, Network monitors.</h2>
+        <h2>Validators, Explorer, Nodes, Indexer, Network monitors.</h2>
       </div>
 
       <div class="rv">
@@ -649,11 +649,10 @@ document.getElementById('nftYieldCount').textContent = YIELD.length + ' collecti
 document.getElementById('nftSouvenirCount').textContent = SOUVENIRS.length + ' drops';
 
 /* ── networks ──────────────────────────────────────────────────────────
-   One record per network. Two URLs are derived rather than stored:
-   every node publishes its archives at <rpc>/snapshots, and GATA SCAN
-   routes by chain id. The per-service flags are deliberately not uniform —
-   Nomic ships no snapshots and is not in the explorer — so each sheet
-   lists only what that network actually has.
+   One record per network. GATA SCAN routes by chain id; scan says whether
+   the network is in the explorer, so each sheet lists only what that
+   network actually has. Endpoints and snapshots are not published here
+   (2026-11-16).
 
    val: an object (mainnet: address + delegation link), true (testnet:
    we validate, but tokens are valueless so no details), or absent.
@@ -664,43 +663,43 @@ const KUMA_PAGE = 'https://uptime.gatadao.com/status/validators';
 const NETWORKS = [
   /* mainnet */
   {nm:'Akash',      chain:'akashnet-2',       sym:'AKT',   ic:'akt',      net:'main', monitor:'Akash',
-   rpc:'https://akash-rpc.gatadao.com',     api:'https://akash-api.gatadao.com',     snap:true, scan:true,
+   scan:false,
    val:{addr:'akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak',
         stake:'https://wallet.keplr.app/chains/akash?modal=validator&chain=akashnet-2&validator_address=akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak'}},
   {nm:'AtomOne',    chain:'atomone-1',        sym:'ATONE', ic:'atomone',  net:'main', monitor:'AtomOne',
-   rpc:'https://atomone-rpc.gatadao.com',   api:'https://atomone-api.gatadao.com',   snap:true, scan:true,
+   scan:true,
    val:{addr:'atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f',
         stake:'https://explorer.allinbits.services/atomone/staking/atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f'}},
   {nm:'Cosmos Hub', chain:'cosmoshub-4',      sym:'ATOM',  ic:'cosmos',   net:'main', monitor:'Cosmos Hub',
-   rpc:'https://cosmoshub-rpc.gatadao.com', api:'https://cosmoshub-api.gatadao.com', snap:true, scan:true,
+   scan:true,
    val:{addr:'cosmosvaloper10unx6s0cdqntvrumd5hs07rgd5ytcztqh8etw6',
         stake:'https://wallet.keplr.app/chains/cosmos-hub'}},
   {nm:'Juno',       chain:'juno-1',           sym:'JUNO',  ic:'junologo', net:'main', monitor:'Juno',
-   rpc:'https://juno-rpc.gatadao.com',      api:'https://juno-api.gatadao.com',      snap:true, scan:true,
+   scan:true,
    val:{addr:'junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2',
         stake:'https://wallet.keplr.app/#/juno/stake?modal=stake&validator=junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2&all-list=true'}},
   {nm:'Osmosis',    chain:'osmosis-1',        sym:'OSMO',  ic:'osmosis',  net:'main', monitor:'Osmosis',
-   rpc:'https://osmosis-rpc.gatadao.com',   api:'https://osmosis-api.gatadao.com',   snap:true, scan:true,
+   scan:false,
    val:{addr:'osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h',
         stake:'https://wallet.keplr.app/chains/osmosis?modal=validator&chain=osmosis-1&validator_address=osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h&referral=true'}},
   {nm:'Passage',    chain:'passage-2',        sym:'PASG',  ic:'passage',  net:'main', monitor:'Passage',
-   rpc:'https://passage-rpc.gatadao.com',   api:'https://passage-api.gatadao.com',   snap:true, scan:true,
+   scan:true,
    val:{addr:'pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv',
         stake:'https://wallet.keplr.app/chains/passage?tab=staking&modal=staking&chain=passage-2&validator_address=pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv&step_id=3&action_id=stake'}},
   {nm:'Nomic',      chain:'nomic-stakenet-3', sym:'NOM',   ic:'nomic',    net:'main', monitor:'Nomic',
-   rpc:'https://nomic-rpc.gatadao.com',                                              snap:false, scan:false,
+   scan:false,
    val:{addr:'nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7',
         stake:'https://app.nomic.io/#/staking?validator=nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7&modal=delegation'}},
   {nm:'Gno.land',   chain:'gnoland-1',        sym:'GNOT',  ic:'gnoland',  net:'main', monitor:'Gnoland',
-   rpc:'https://gnoland-rpc.gatadao.com',                                            snap:true, scan:true,  val:true},
+   scan:true,  val:true},
 
   /* testnet */
   {nm:'Cosmos Testnet',  chain:'provider',          ic:'cosmos',  net:'test', monitor:'Cosmos Testnet',
-   rpc:'https://provider-rpc.gatadao.com',        api:'https://provider-api.gatadao.com',        snap:true, scan:true, val:true},
+   scan:true, val:true},
   {nm:'AtomOne Testnet', chain:'atomone-testnet-1', ic:'atomone', net:'test', monitor:'AtomOne Testnet',
-   rpc:'https://atomone-testnet-rpc.gatadao.com', api:'https://atomone-testnet-api.gatadao.com', snap:true, scan:true, val:true},
+   scan:true, val:true},
   {nm:'Gno.land Testnet',chain:'onyx-1',           ic:'gnoland', net:'test', monitor:'Gno.land Testnet',
-   rpc:'https://gnoland-testnet-rpc.gatadao.com',                                                snap:true, scan:true,  val:true}
+   scan:true,  val:true}
 ];
 
 const byChain = Object.fromEntries(NETWORKS.map(n => [n.chain, n]));
@@ -763,9 +762,6 @@ function uptimeCell(n) {
 function sheetHTML(n) {
   const testnet = n.net === 'test';
   const rows = [];
-  if (n.rpc)  rows.push(row('RPC', copy(n.rpc)));
-  if (n.api)  rows.push(row('API', copy(n.api)));
-  if (n.snap) rows.push(row('Snapshots', link(n.rpc + '/snapshots', 'Browse snapshots ↗')));
   if (n.scan) rows.push(row('Explorer', link(`${EXPLORER}/${n.chain}`, 'Open in GATA SCAN ↗')));
   if (n.val)  rows.push(row('Validator',
       `<span class="st up"><i></i>Validating</span>` +
