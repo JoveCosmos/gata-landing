@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GATA HUB — Catnip for the decentralized world of tomorrow</title>
-<meta name="description" content="GATA HUB — NFT collections, validators, public RPC endpoints and a block explorer for the interchain." />
+<meta name="description" content="GATA HUB, NFT collections, validators and a block explorer for the interchain." />
 <link rel="icon" href="assets/gata-logo.jpg" />
 <!-- Fonts are self-hosted: no third-party request, no CSP exception,
      nothing leaves the visitor's browser for a font. The latin-ext faces
@@ -662,10 +662,6 @@ const KUMA_PAGE = 'https://uptime.gatadao.com/status/validators';
 
 const NETWORKS = [
   /* mainnet */
-  {nm:'Akash',      chain:'akashnet-2',       sym:'AKT',   ic:'akt',      net:'main', monitor:'Akash',
-   scan:false,
-   val:{addr:'akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak',
-        stake:'https://wallet.keplr.app/chains/akash?modal=validator&chain=akashnet-2&validator_address=akashvaloper1jr62umvv72q233e2ew8fkaf0x9yhzfqef42kak'}},
   {nm:'AtomOne',    chain:'atomone-1',        sym:'ATONE', ic:'atomone',  net:'main', monitor:'AtomOne',
    scan:true,
    val:{addr:'atonevaloper10unx6s0cdqntvrumd5hs07rgd5ytcztq7w6s7f',
@@ -678,18 +674,10 @@ const NETWORKS = [
    scan:true,
    val:{addr:'junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2',
         stake:'https://wallet.keplr.app/#/juno/stake?modal=stake&validator=junovaloper1yeaw3dv6jk3hr290l2tsew7rr2vjykynme37s2&all-list=true'}},
-  {nm:'Osmosis',    chain:'osmosis-1',        sym:'OSMO',  ic:'osmosis',  net:'main', monitor:'Osmosis',
-   scan:false,
-   val:{addr:'osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h',
-        stake:'https://wallet.keplr.app/chains/osmosis?modal=validator&chain=osmosis-1&validator_address=osmovaloper1d5ada26tcd24wltfakqkkdu3656k6n4chnyz8h&referral=true'}},
   {nm:'Passage',    chain:'passage-2',        sym:'PASG',  ic:'passage',  net:'main', monitor:'Passage',
    scan:true,
    val:{addr:'pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv',
         stake:'https://wallet.keplr.app/chains/passage?tab=staking&modal=staking&chain=passage-2&validator_address=pasgvaloper17axwjxcdgmeygx2mfndkqhamsnx5q48xv6zxxv&step_id=3&action_id=stake'}},
-  {nm:'Nomic',      chain:'nomic-stakenet-3', sym:'NOM',   ic:'nomic',    net:'main', monitor:'Nomic',
-   scan:false,
-   val:{addr:'nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7',
-        stake:'https://app.nomic.io/#/staking?validator=nomic1v7y0w4uwxtl60z3da3vlxgec422dfz6sdngmv7&modal=delegation'}},
   {nm:'Gno.land',   chain:'gnoland-1',        sym:'GNOT',  ic:'gnoland',  net:'main', monitor:'Gnoland',
    scan:true,  val:true},
 
@@ -820,7 +808,7 @@ const UPTIME_BASE = '/api/uptime';
 const UPTIME_SLUG = 'validators';
 
 /* Monitors still configured upstream for networks we no longer list. */
-const STATUS_HIDE = ['namada'];
+const STATUS_HIDE = ['namada', 'osmosis', 'nomic', 'akash'];
 
 let lastStatusAt = 0;
 

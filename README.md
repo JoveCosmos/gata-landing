@@ -47,16 +47,16 @@ Everything on the page is driven by plain arrays near the bottom of
 | Social links | search `const SOCIALS` |
 | NFT collections (Yield Series) | search `const YIELD` |
 | NFT souvenirs / honorary | search `const SOUVENIRS` |
-| Networks — validators, endpoints, snapshots, explorer, uptime | search `const NETWORKS` |
+| Networks: validators, explorer, uptime | search `const NETWORKS` |
 | Monitors to hide from Status | search `const STATUS_HIDE` |
 
 Each network record carries per-service flags (`rpc`, `api`, `snap`, `scan`,
 `val`) and its Kuma `monitor` name. Two URLs are derived, not stored: snapshots
 live at `<rpc>/snapshots`, and GATA SCAN routes by chain id. The flags are not
-uniform on purpose — Nomic has no snapshots and is not in the explorer — so
+uniform on purpose (not every network is in the explorer), so
 each sheet lists only what that network actually has.
 
-`STATUS_HIDE` exists because the uptime monitor still tracks Namada, which the
+`STATUS_HIDE` exists because the uptime monitor still tracks Namada, Osmosis, Nomic and Akash, which the
 page no longer lists. Pausing that monitor upstream would be the tidier fix.
 
 ## Live status
